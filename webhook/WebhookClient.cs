@@ -1,4 +1,6 @@
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Text;
 
 namespace MusicBeePlugin
 {
@@ -12,9 +14,12 @@ namespace MusicBeePlugin
         }
         public async Task SendAsync(string url)
         {
-            using var request = new HttpRequestMessage(HttpMethod.Post, url);
+            using var request = new HttpRequestMessage(
+                HttpMethod.Post, url
+            );
+            request.Content = new StringContent("Hello from MusicBee!!");
 
-            await _httpClient.PostAsync(url, null);
+            await _httpClient.SendAsync(request);
         }
     }
 }
