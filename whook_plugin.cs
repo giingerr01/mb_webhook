@@ -103,7 +103,7 @@ namespace MusicBeePlugin
                     + "}";
 
                     webhookClient.SendAsync(
-                        "https://localhost:3000/webhook",
+                        "http://localhost:3000/webhook",
                         json
                     ).GetAwaiter().GetResult();
 
