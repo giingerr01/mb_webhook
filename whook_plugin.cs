@@ -95,15 +95,19 @@ namespace MusicBeePlugin
                     string title =
                     mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
 
+                    string album =
+                    mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
+
                     string json =
                     "{"
                     + "\"event\":\"track_changed\","
                     + "\"artist\":\"" + artist + "\","
-                    + "\"title\":\"" + title + "\""
+                    + "\"title\":\"" + title + "\","
+                    + "\"format\":\"" + album + "\""
                     + "}";
 
                     webhookClient.SendAsync(
-                        "http://localhost:3000/webhook",
+                        "https://webhook.site/2021632e-a7c9-47f9-9eb3-5e053d7e6015",
                         json
                     ).GetAwaiter().GetResult();
 
