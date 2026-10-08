@@ -31,14 +31,5 @@ namespace MusicBeePlugin
             about.ConfigurationPanelHeight = 0;   // height in pixels that musicbee should reserve in a panel for config settings. When set, a handle to an empty panel will be passed to the Configure function
             return about;
         }
-
-        public void ReciveNotifiction(string sourceFileUrl, NotificationType type)
-        {
-            if (type == NotificationType.TrackChanged)
-            {
-                SendWebhookPayload();
-            }
-        }
-
     }
 }
