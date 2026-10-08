@@ -35,11 +35,7 @@ namespace MusicBeePlugin
 
         public bool Configure(IntPtr panelHandle)
         {
-            // save any persistent settings in a sub-folder of this path
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
-            // panelHandle will only be set if you set about.ConfigurationPanelHeight to a non-zero value
-            // keep in mind the panel width is scaled according to the font the user has selected
-            // if about.ConfigurationPanelHeight is set to 0, you can display your own popup window
             if (panelHandle != IntPtr.Zero)
             {
                 Panel configPanel = (Panel)Panel.FromHandle(panelHandle);

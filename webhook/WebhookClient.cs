@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MusicBeePlugin
@@ -11,8 +12,14 @@ namespace MusicBeePlugin
             _httpClient = new HttpClient();
         }
 
-        public async Task SendAsync(string url)
+        public async Task SendAsync(string url, string json)
         {
+            var content = new StringContent(
+                json,
+                Encoding.UTF8,
+                "application/json"
+            );
+
             await _httpClient.PostAsync(url, null);
         }
     }
