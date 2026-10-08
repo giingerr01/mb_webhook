@@ -12,11 +12,16 @@ namespace MusicBeePlugin
     {
         private MusicBeeApiInterface mbApiInterface;
         private PluginInfo about = new PluginInfo();
+        private WebhookClient webhookClient;
 
         public PluginInfo Initialise(IntPtr apiInterfacePtr)
         {
             mbApiInterface = new MusicBeeApiInterface();
             mbApiInterface.Initialise(apiInterfacePtr);
+            // our client declaration
+            webhookClient = new WebhookClient();
+
+
             about.PluginInfoVersion = PluginInfoVersion;
             about.Name = "Webhook Plugin";
             about.Description = "A plugin that post track now playing status";
@@ -84,8 +89,27 @@ namespace MusicBeePlugin
                     }
                     break;
                 case NotificationType.TrackChanged:
-                    string artist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
-                    // ...
+                    string artist =
+                    mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
+
+                    string title =
+                    mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
+
+                    string json =
+                    "{"
+                    + "\"event\":\"track_changed\","
+                    + "\"artist\":\"" + artist + "\","
+                    + "\"title\":\"" + title + "\""
+                    + "}";
+
+                    webhookClient.SendAsync(
+                        "https://localhost:3000/webhook",
+                        json
+                    ).GetAwaiter().GetResult();
+
+                    // MessageBox.Show(
+                    // json
+                    // );
                     break;
             }
         }
