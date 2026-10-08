@@ -1,0 +1,22 @@
+# Build output
+/bin/
+/obj/
+/Debug/
+/Release/
+/x86/
+/x64/
+/TestResults/
+
+# Visual Studio
+/.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Local machine configuration
+/MusicBee.local.targets
+
+# Operating system files
+.DS_Store
+Thumbs.db
