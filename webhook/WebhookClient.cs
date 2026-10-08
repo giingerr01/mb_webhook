@@ -1,6 +1,9 @@
 using System.Net.Http;
 using System.Text;
+using System.Drawing;
+using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MusicBeePlugin
 {
@@ -14,6 +17,7 @@ namespace MusicBeePlugin
 
         public async Task SendAsync(string url, string json)
         {
+
             MessageBox.Show("Inside SendAsync");
 
             var content = new StringContent(
@@ -24,7 +28,7 @@ namespace MusicBeePlugin
 
             MessageBox.Show("About to PostAsync");
 
-            await _httpClient.PostAsync(url, null);
+            await _httpClient.PostAsync(url, content);
 
             MessageBox.Show("PostAsync finished");
         }
