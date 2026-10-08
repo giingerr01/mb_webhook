@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Drawing;
@@ -13,6 +14,7 @@ namespace MusicBeePlugin
         public WebhookClient()
         {
             _httpClient = new HttpClient();
+            _httpClient.Timeout = TimeSpan.FromSeconds(5);
         }
 
         public async Task SendAsync(string url, string json)
