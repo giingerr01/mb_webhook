@@ -105,7 +105,7 @@ namespace MusicBeePlugin
                     MessageBox.Show("About to send:\n" + json);
 
                     webhookClient.SendAsync(
-                        "https://localhost:3000/webhook",
+                        "http://localhost:3000/webhook",
                         json
                     ).GetAwaiter().GetResult();
 
