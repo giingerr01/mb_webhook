@@ -4,5 +4,13 @@
         "editor.formatOnSave": true,
         "editor.insertSpaces": true,
         "editor.tabSize": 4
-    }
+    },
+    "editor.inlineSuggest.enabled": false,
+    "editor.inlineSuggest.edits.showLongDistanceHint": false,
+    "github.copilot.nextEditSuggestions.allowWhitespaceOnlyChanges": false,
+    "github.copilot.nextEditSuggestions.extendedRange": false,
+    "github.copilot.nextEditSuggestions.fixes": false,
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "editor.inlineSuggest.edits.allowCodeShifting": "never",
+    "editor.inlineSuggest.edits.renderSideBySide": "never"
 }
