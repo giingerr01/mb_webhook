@@ -12,8 +12,10 @@ namespace MusicBeePlugin
 {
     public partial class Plugin
     {
+
         private MusicBeeApiInterface mbApiInterface;
         private PluginInfo about = new PluginInfo();
+        private string webhookUrl = "http://localhost:3000/webhook";
         private WebhookClient webhookClient;
 
 
@@ -24,6 +26,13 @@ namespace MusicBeePlugin
 
             //logger for musicbee logtrace
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
+            string urlFile =
+                System.IO.File.Combine(dataPath, "webhookUrl.txt");
+            if (System.IO.File.Exists(urlFile))
+            {
+                webhookUrl = System.IO.File.ReadAllText(urlFile);
+            }
+
             Logger.FilePath = Path.Combine(dataPath, "webhook_plugin.log");
             Logger.Log("Plugin intialised");
 
@@ -49,17 +58,12 @@ namespace MusicBeePlugin
 
         public bool Configure(IntPtr panelHandle)
         {
-            string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
-            if (panelHandle != IntPtr.Zero)
+            using (SettingsForm form = new SettingsForm(webhookUrl))
             {
-                Panel configPanel = (Panel)Panel.FromHandle(panelHandle);
-                Label prompt = new Label();
-                prompt.AutoSize = true;
-                prompt.Location = new Point(0, 0);
-                prompt.Text = "prompt:";
-                TextBox textBox = new TextBox();
-                textBox.Bounds = new Rectangle(60, 0, 100, textBox.Height);
-                configPanel.Controls.AddRange(new Control[] { prompt, textBox });
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    webhookUrl = form._webUrl;
+                }
             }
             return false;
         }
@@ -70,6 +74,11 @@ namespace MusicBeePlugin
         {
             // save any persistent settings in a sub-folder of this path
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
+
+            System.IO.File.WriteAllText(
+                System.IO.Path.Combine(dataPath, "webhookUrl.txt"),
+                webhookUrl
+            );
         }
 
         // MusicBee is closing the plugin (plugin is being disabled by user or MusicBee is shutting down)
@@ -114,7 +123,7 @@ namespace MusicBeePlugin
                         Logger.Log("State: " + stateJson);
 
                         webhookClient.SendAsync(
-                            "http://localhost:3000/webhook",
+                            webhookUrl,
                             stateJson
                         ).GetAwaiter().GetResult();
                     }
@@ -141,11 +150,11 @@ namespace MusicBeePlugin
                     + "\"event\":\"track_changed\","
                     + "\"artist\":\"" + artist + "\","
                     + "\"title\":\"" + title + "\","
-                    + "\"album\":\"" + album + "\","
+                    + "\"album\":\"" + album + "\""
                     + "}";
 
                     webhookClient.SendAsync(
-                        "http://localhost:3000/webhook",
+                        webhookUrl,
                         json
                     ).GetAwaiter().GetResult();
 
