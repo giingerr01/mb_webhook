@@ -23,7 +23,7 @@ namespace MusicBeePlugin
 
                 string content = JsonSerializer.Serialize(trackState);
 
-                // var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
+                var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
 
                 httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
             }
