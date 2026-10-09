@@ -65,13 +65,13 @@ namespace MusicBeePlugin
             {
                 Panel configPanel = (Panel)Panel.FromHandle(panelHandle);
 
-                Label Prompt = new Label();
-                Prompt.AutoSize = true;
-                Prompt.Location = new Point(0, 4);
-                Prompt.Text = "Webhook URL";
+                System.Windows.Forms.Label prompt = new System.Windows.Forms.Label();
+                prompt.AutoSize = true;
+                prompt.Location = new Point(0, 4);
+                prompt.Text = "Webhook URL";
 
                 urlBox = new TextBox();
-                urlBox.Bounds = new Rectangle(90, 0, 300, urlBox.Height);
+                urlBox.Bounds = new Rectangle(70, 0, 300, urlBox.Height);
                 urlBox.Text = webhookUrl;
 
                 configPanel.Controls.AddRange(new Control[] { prompt, urlBox });
@@ -83,6 +83,10 @@ namespace MusicBeePlugin
         // its up to you to figure out whether anything has changed and needs updating
         public void SaveSettings()
         {
+            if (urlBox != null)
+            {
+                webhookUrl = urlBox.Text.Trim();
+            }
             // save any persistent settings in a sub-folder of this path
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
 
@@ -111,11 +115,9 @@ namespace MusicBeePlugin
                     switch (mbApiInterface.Player_GetPlayState())
                     {
                         case PlayState.Playing:
-                            MessageBox.Show("Playing");
                             break;
 
                         case PlayState.Paused:
-                            MessageBox.Show("Paused");
                             // ...
                             break;
                     }
