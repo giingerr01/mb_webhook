@@ -89,6 +89,7 @@
     <Compile Include="webhook\WebhookClient.cs" />
     <Compile Include="SettingsPanel\settingsForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="customApps\discord\discord.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
