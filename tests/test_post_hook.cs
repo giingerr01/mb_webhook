@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MusicBeePlugin
 {
@@ -19,10 +20,10 @@ namespace MusicBeePlugin
         {
             string json =
             "{"
-            + "\"Event:\":\"track_changed\","
-            + "\"Artist:\":\"" + artist + "\","
-            + "\"Title:\":\"" + title + "\","
-            + "\"Album:\":\"" + album + "\""
+            + "\"event:\":\"track_changed\","
+            + "\"artist:\":\"" + artist + "\","
+            + "\"title:\":\"" + title + "\","
+            + "\"album:\":\"" + album + "\""
             + "}";
 
             using (var content = new StringContent(
