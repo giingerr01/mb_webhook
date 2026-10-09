@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("mb_webhook")]
-[assembly: AssemblyDescription("A plugin library for Musicbee that lets the musicbee send http webhooks")]
+[assembly: AssemblyDescription("A MusicBee plugin for sending HTTP webhooks")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("giingerr01")]
 [assembly: AssemblyProduct("Webhook for MusicBee")]
-[assembly: AssemblyCopyright("Copyright © giingerr01,2026")]
+[assembly: AssemblyCopyright("Copyright © 2026 giingerr01")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
