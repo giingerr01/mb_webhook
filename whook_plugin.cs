@@ -27,10 +27,10 @@ namespace MusicBeePlugin
             //logger for musicbee logtrace
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string urlFile =
-                System.IO.File.Combine(dataPath, "webhookUrl.txt");
+                System.IO.Path.Combine(dataPath, "webhookUrl.txt");
             if (System.IO.File.Exists(urlFile))
             {
-                webhookUrl = System.IO.File.ReadAllText(urlFile);
+                webhookUrl = System.IO.File.ReadAllText(urlFile).Trim();
             }
 
             Logger.FilePath = Path.Combine(dataPath, "webhook_plugin.log");
@@ -63,6 +63,7 @@ namespace MusicBeePlugin
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     webhookUrl = form._webUrl;
+                    SaveSettings();
                 }
             }
             return false;
@@ -75,10 +76,9 @@ namespace MusicBeePlugin
             // save any persistent settings in a sub-folder of this path
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
 
-            System.IO.File.WriteAllText(
-                System.IO.Path.Combine(dataPath, "webhookUrl.txt"),
-                webhookUrl
-            );
+            string urlFile = System.IO.Path.Combine(dataPath, "webhookUrl.txt");
+
+            System.IO.File.WriteAllText(urlFile, webhookUrl);
         }
 
         // MusicBee is closing the plugin (plugin is being disabled by user or MusicBee is shutting down)
