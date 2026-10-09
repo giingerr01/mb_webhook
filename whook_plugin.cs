@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Windows.Forms;
@@ -15,10 +16,17 @@ namespace MusicBeePlugin
         private PluginInfo about = new PluginInfo();
         private WebhookClient webhookClient;
 
+
         public PluginInfo Initialise(IntPtr apiInterfacePtr)
         {
             mbApiInterface = new MusicBeeApiInterface();
             mbApiInterface.Initialise(apiInterfacePtr);
+
+            //logger for musicbee logtrace
+            string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
+            Logger.FilePath = Path.Combine(dataPath, "webhook_plugin.log");
+            Logger.Log("Plugin intialised");
+
             // our client declaration
             webhookClient = new WebhookClient();
 
@@ -84,9 +92,11 @@ namespace MusicBeePlugin
                     switch (mbApiInterface.Player_GetPlayState())
                     {
                         case PlayState.Playing:
+                            MessageBox.Show("Playing");
                             break;
 
                         case PlayState.Paused:
+                            MessageBox.Show("Paused");
                             // ...
                             break;
                     }
@@ -99,11 +109,11 @@ namespace MusicBeePlugin
 
                         string stateJson =
                         "{"
-                        + "\"event\":\"" + state + "\""
+                        + "\"state\":\"" + state + "\""
                         + "}";
 
                         webhookClient.SendAsync(
-                            "https://webhook.site/2021632e-a7c9-47f9-9eb3-5e053d7e6015",
+                            "http://localhost:3000/webhook",
                             stateJson
                         ).GetAwaiter().GetResult();
                     }
@@ -134,7 +144,7 @@ namespace MusicBeePlugin
                     + "}";
 
                     webhookClient.SendAsync(
-                        "https://webhook.site/2021632e-a7c9-47f9-9eb3-5e053d7e6015",
+                        "http://localhost:3000/webhook",
                         json
                     ).GetAwaiter().GetResult();
 
