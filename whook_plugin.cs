@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Runtime.Remoting.Channels;
 using System.Diagnostics;
 using System.Security;
+using System.Reflection.Emit;
+using Microsoft.VisualBasic;
 
 namespace MusicBeePlugin
 {
@@ -16,6 +18,7 @@ namespace MusicBeePlugin
         private MusicBeeApiInterface mbApiInterface;
         private PluginInfo about = new PluginInfo();
         private string webhookUrl = "http://localhost:3000/webhook";
+        private TextBox urlBox;
         private WebhookClient webhookClient;
 
 
@@ -52,19 +55,26 @@ namespace MusicBeePlugin
             about.MinInterfaceVersion = MinInterfaceVersion;
             about.MinApiRevision = MinApiRevision;
             about.ReceiveNotifications = (ReceiveNotificationFlags.PlayerEvents | ReceiveNotificationFlags.TagEvents);
-            about.ConfigurationPanelHeight = 0;   // height in pixels that musicbee should reserve in a panel for config settings. When set, a handle to an empty panel will be passed to the Configure function
+            about.ConfigurationPanelHeight = 60;   // height in pixels that musicbee should reserve in a panel for config settings. When set, a handle to an empty panel will be passed to the Configure function
             return about;
         }
 
         public bool Configure(IntPtr panelHandle)
         {
-            using (SettingsForm form = new SettingsForm(webhookUrl))
+            if (panelHandle != IntPtr.Zero)
             {
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    webhookUrl = form._webUrl;
-                    SaveSettings();
-                }
+                Panel configPanel = (Panel)Panel.FromHandle(panelHandle);
+
+                Label Prompt = new Label();
+                Prompt.AutoSize = true;
+                Prompt.Location = new Point(0, 4);
+                Prompt.Text = "Webhook URL";
+
+                urlBox = new TextBox();
+                urlBox.Bounds = new Rectangle(90, 0, 300, urlBox.Height);
+                urlBox.Text = webhookUrl;
+
+                configPanel.Controls.AddRange(new Control[] { prompt, urlBox });
             }
             return false;
         }
