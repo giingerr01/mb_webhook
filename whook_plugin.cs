@@ -121,14 +121,16 @@ namespace MusicBeePlugin
 
                     // string art = mbApiInterface.NowPlaying_GetArtwork();
 
+                    // string lyrics =
+                    // mbApiInterface.NowPlaying_GetLyrics();
+
 
                     string json =
                     "{"
                     + "\"event\":\"track_changed\","
                     + "\"artist\":\"" + artist + "\","
                     + "\"title\":\"" + title + "\","
-                    + "\"album\":\"" + album + "\""
-                    // + "\"art\":\"" + art.ToString() + "\""
+                    + "\"album\":\"" + album + "\","
                     + "}";
 
                     webhookClient.SendAsync(
