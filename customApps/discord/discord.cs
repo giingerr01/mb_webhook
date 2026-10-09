@@ -7,12 +7,24 @@ namespace MusicBeePlugin
     public static class DiscordNotifier
     {
         private static readonly HttpClient httpClient = new HttpClient();
-        public static void SendMessage(string webhookUrl)
+        public static void SendMessage(
+            string webhookUrl,
+            string artist,
+            string title,
+            string album
+            )
+
         {
             try
             {
-                string payload = @"{""content"": ""hii from musicbee""}";
-                var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+                string trackState =
+                    "{"
+                    + "\"content\":\"Now Playing: " + title
+                    + " by " + artist
+                    + " | Album: " + album + "\""
+                    + "}";
+
+                var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
 
                 httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
             }

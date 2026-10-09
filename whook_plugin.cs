@@ -125,8 +125,6 @@ namespace MusicBeePlugin
 
                 case NotificationType.TrackChanged:
 
-                    DiscordNotifier.SendMessage(webhookUrl);
-
                     string artist =
                     mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
 
@@ -142,6 +140,14 @@ namespace MusicBeePlugin
                         title,
                         album
                     ).GetAwaiter().GetResult();
+
+
+                    DiscordNotifier.SendMessage(
+                        webhookUrl,
+                        artist,
+                        title,
+                        album
+                        );
 
                     break;
 
