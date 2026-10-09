@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Channels;
 using System.Diagnostics;
+using System.Security;
 
 namespace MusicBeePlugin
 {
@@ -83,11 +84,31 @@ namespace MusicBeePlugin
                     switch (mbApiInterface.Player_GetPlayState())
                     {
                         case PlayState.Playing:
+                            break;
+
                         case PlayState.Paused:
                             // ...
                             break;
                     }
                     break;
+
+
+                case NotificationType.PlayStateChanged:
+                    {
+                        PlayState state = mbApiInterface.Player_GetPlayState();
+
+                        string stateJson =
+                        "{"
+                        + "\"event\":\"" + state + "\""
+                        + "}";
+
+                        webhookClient.SendAsync(
+                            "https://webhook.site/2021632e-a7c9-47f9-9eb3-5e053d7e6015",
+                            stateJson
+                        ).GetAwaiter().GetResult();
+                    }
+                    break;
+
                 case NotificationType.TrackChanged:
                     string artist =
                     mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
@@ -98,12 +119,16 @@ namespace MusicBeePlugin
                     string album =
                     mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
 
+                    // string art = mbApiInterface.NowPlaying_GetArtwork();
+
+
                     string json =
                     "{"
                     + "\"event\":\"track_changed\","
                     + "\"artist\":\"" + artist + "\","
                     + "\"title\":\"" + title + "\","
-                    + "\"format\":\"" + album + "\""
+                    + "\"album\":\"" + album + "\""
+                    // + "\"art\":\"" + art.ToString() + "\""
                     + "}";
 
                     webhookClient.SendAsync(
