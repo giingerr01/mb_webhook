@@ -90,6 +90,7 @@
     <Compile Include="SettingsPanel\settingsForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="customApps\discord\discord.cs" />
+    <Compile Include="tests\test_post_hook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
