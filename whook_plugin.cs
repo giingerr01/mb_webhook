@@ -134,6 +134,7 @@ namespace MusicBeePlugin
                     string album =
                     mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
 
+                    //a custom url for local post test 
                     TestPayload.SendAsync(
                         "http://localhost:3000/webhook",
                         artist,
@@ -142,6 +143,7 @@ namespace MusicBeePlugin
                     ).GetAwaiter().GetResult();
 
 
+                    //post request to discord
                     DiscordNotifier.SendMessage(
                         webhookUrl,
                         artist,

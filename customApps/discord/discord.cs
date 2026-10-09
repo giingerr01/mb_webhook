@@ -1,6 +1,8 @@
 using System;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 
 namespace MusicBeePlugin
 {
@@ -17,14 +19,11 @@ namespace MusicBeePlugin
         {
             try
             {
-                string trackState =
-                    "{"
-                    + "\"content\":\"Now Playing: " + title
-                    + " by " + artist
-                    + " | Album: " + album + "\""
-                    + "}";
+                var trackState = new TrackState { Name = "Copsegod", Age = 18 };
 
-                var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
+                string content = JsonSerializer.Serialize(trackState);
+
+                // var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
 
                 httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
             }
