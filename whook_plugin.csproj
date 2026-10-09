@@ -87,6 +87,7 @@
     <Compile Include="whook_plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
+    <Compile Include="SettingsPanel\settingsForm.cs" />
 
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

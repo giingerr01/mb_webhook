@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace MusicBeePlugin
 {
-    public class SettingsForm : form
+    public class SettingsForm : Form
     {
         private TextBox _webUrlBox;
 
