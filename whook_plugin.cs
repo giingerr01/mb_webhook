@@ -123,55 +123,33 @@ namespace MusicBeePlugin
                     }
                     break;
 
-
-                // case NotificationType.PlayStateChanged:
-                //     {
-                //         PlayState state = mbApiInterface.Player_GetPlayState();
-
-                //         string stateJson =
-                //         "{"
-                //         + "\"state\":\"" + state + "\""
-                //         + "}";
-                //         Logger.Log("State: " + stateJson);
-
-                //         webhookClient.SendAsync(
-                //             webhookUrl,
-                //             stateJson
-                //         ).GetAwaiter().GetResult();
-                //     }
-                //     break;
-
                 case NotificationType.TrackChanged:
 
                     DiscordNotifier.SendMessage(webhookUrl);
+
+                    string artist =
+                    mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
+
+                    string title =
+                    mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
+
+                    string album =
+                    mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
+
+                    TestPayload.SendAsync(
+                        "http://localhost:3000/webhook",
+                        artist,
+                        title,
+                        album
+                    ).GetAwaiter().GetResult();
+
                     break;
-                    // string artist =
-                    // mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
 
-                    // string title =
-                    // mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
+                    // string art = mbApiInterface.NowPlaying_GetArtwork();
 
-                    // string album =
-                    // mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
+                    // string lyrics =
+                    // mbApiInterface.NowPlaying_GetLyrics();
 
-                    // // string art = mbApiInterface.NowPlaying_GetArtwork();
-
-                    // // string lyrics =
-                    // // mbApiInterface.NowPlaying_GetLyrics();
-
-
-                    // string json =
-                    // "{"
-                    // + "\"event\":\"track_changed\","
-                    // + "\"artist\":\"" + artist + "\","
-                    // + "\"title\":\"" + title + "\","
-                    // + "\"album\":\"" + album + "\""
-                    // + "}";
-
-                    // webhookClient.SendAsync(
-                    //     webhookUrl,
-                    //     json
-                    // ).GetAwaiter().GetResult();
 
 
                     // MessageBox.Show(
