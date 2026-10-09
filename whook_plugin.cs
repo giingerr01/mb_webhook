@@ -177,7 +177,7 @@ namespace MusicBeePlugin
                     // MessageBox.Show(
                     // json
                     // );
-                    break;
+                    // break;
             }
         }
 
