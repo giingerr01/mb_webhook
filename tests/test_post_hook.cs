@@ -9,24 +9,28 @@ namespace MusicBeePlugin
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-        private string testUrl = "http://localhost:3000/webhook";
-        string artist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
-        string title = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Title);
-        string album = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
+        public static async Task SendAsync(
+            string url,
+            string artist,
+            string title,
+            string album
+        )
 
-        string json =
-        "{"
-        + "\"Event:\":\"track_changed\","
-        + "\"Artist:\":\"" + artist + "\","
-        + "\"Title:\":\"" + title + "\","
-        + "\"Album:\":\"" + album + "\""
-        + "}";
+        {
+            string json =
+            "{"
+            + "\"Event:\":\"track_changed\","
+            + "\"Artist:\":\"" + artist + "\","
+            + "\"Title:\":\"" + title + "\","
+            + "\"Album:\":\"" + album + "\""
+            + "}";
 
-        webhookClient.SendAsync(
-            "http://localhost:3000/webhook",
-            json
-
-        );
-
+            using (var content = new StringContent(
+                json, Encoding.UTF8, "application/json"
+            ))
+            {
+                await httpClient.PostAsync(url, content);
+            }
+        }
     }
 }
