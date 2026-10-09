@@ -111,6 +111,7 @@ namespace MusicBeePlugin
                         "{"
                         + "\"state\":\"" + state + "\""
                         + "}";
+                        Logger.Log("State: " + stateJson);
 
                         webhookClient.SendAsync(
                             "http://localhost:3000/webhook",
@@ -147,6 +148,7 @@ namespace MusicBeePlugin
                         "http://localhost:3000/webhook",
                         json
                     ).GetAwaiter().GetResult();
+
 
                     // MessageBox.Show(
                     // json
