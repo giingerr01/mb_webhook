@@ -19,15 +19,20 @@ namespace MusicBeePlugin
 
         public async Task SendAsync(string url, string json)
         {
+            try
+            {
+                var content = new StringContent(
+                    json,
+                    Encoding.UTF8,
+                    "application/json"
+                );
+                await _httpClient.PostAsync(url, content);
 
-            var content = new StringContent(
-                json,
-                Encoding.UTF8,
-                "application/json"
-            );
-
-
-            await _httpClient.PostAsync(url, content);
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Send FAILED: " + ex.Message);
+            }
         }
     }
 }
