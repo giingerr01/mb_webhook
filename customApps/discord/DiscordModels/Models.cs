@@ -18,8 +18,14 @@ namespace MusicBeePlugin
         public int color { get; set; }
         public EmbedAuthor author { get; set; }
         public EmbedFooter footer { get; set; }
+        public EmbedThumbnail thumbnail { get; set; }
         public string description { get; set; }
         public List<DiscordField> fields { get; set; }
+    }
+
+    public class EmbedThumbnail
+    {
+        public string url { get; set; }
     }
 
     public class EmbedFooter

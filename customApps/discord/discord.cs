@@ -40,7 +40,7 @@ namespace MusicBeePlugin
                         {
                             author = new EmbedAuthor
                             {
-                                name = "Now Playing from **MusicBee**",
+                                name = "Now Playing from MusicBee",
                             },
 
                             title = title,
@@ -67,6 +67,10 @@ namespace MusicBeePlugin
                             footer = new EmbedFooter
                             {
                                 text = "Source: MusicBee"
+                            },
+                            thumbnail  = new EmbedThumbnail
+                            {
+                                url = "coming soon"
                             }
                         }
                     },
