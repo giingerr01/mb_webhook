@@ -140,7 +140,7 @@ namespace MusicBeePlugin
                         artist,
                         title,
                         album
-                    ).GetAwaiter().GetResult();
+                    );
 
 
                     //post request to discord
