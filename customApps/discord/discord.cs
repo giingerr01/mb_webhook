@@ -54,7 +54,6 @@ namespace MusicBeePlugin
             {
                 DiscordPay payload = new DiscordPay
                 {
-                    art = art,
                     content = "Now Playing 🎶",
                     embeds = new List<DiscordEmbed>
 
