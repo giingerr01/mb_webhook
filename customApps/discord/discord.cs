@@ -20,6 +20,8 @@ namespace MusicBeePlugin
 
         public class DiscordPay
         {
+            public string username { get; set; }
+            public string avatar_url { get; set; }
             public string content { get; set; }
             // public string art { get; set; }
             public List<DiscordEmbed> embeds { get; set; }
@@ -28,12 +30,18 @@ namespace MusicBeePlugin
 
         public class DiscordEmbed
         {
+
             public string title { get; set; }
-            public string description { get; set; }
             public int color { get; set; }
+            public EmbedAuthor author { get; set; }
+            public string description { get; set; }
             public List<DiscordField> fields { get; set; }
         }
 
+        public class EmbedAuthor
+        {
+            public string name { get; set; }
+        }
 
         public class DiscordField
         {
@@ -54,15 +62,21 @@ namespace MusicBeePlugin
             {
                 DiscordPay payload = new DiscordPay
                 {
-                    content = "Now Playing 🎶",
+                    username = "giingerr01",
+                    avatar_url = "https://i.imgur.com/AfFp7pu.png",
                     embeds = new List<DiscordEmbed>
 
                     {
                         new DiscordEmbed
                         {
+                            author = new EmbedAuthor
+                            {
+                                name = "Now Playing from ***MusicBee***",
+                            },
+
                             title = title,
-                            description = "Artist: " + artist,
-                            color = 4384393,
+                            description = "by " + artist,
+                            color = 3447003,
                             fields = new List<DiscordField>
                             {
                                 new DiscordField
@@ -71,6 +85,12 @@ namespace MusicBeePlugin
                                     value = string.IsNullOrWhiteSpace(album)
                                     ?
                                     "Unknown" : album,
+                                    inline = false
+                                },
+                                new DiscordField
+                                {
+                                    name = "BITRATE",
+                                    value = "Playing",
                                     inline = true
                                 }
                             }
