@@ -14,17 +14,23 @@ namespace MusicBeePlugin
 
     public class DiscordEmbed
     {
-
         public string title { get; set; }
         public int color { get; set; }
         public EmbedAuthor author { get; set; }
+        public EmbedFooter footer { get; set; }
         public string description { get; set; }
         public List<DiscordField> fields { get; set; }
+    }
+
+    public class EmbedFooter
+    {
+        public string text { get; set; }
     }
 
     public class EmbedAuthor
     {
         public string name { get; set; }
+        public string description { get; set; }
     }
 
     public class DiscordField
@@ -32,5 +38,6 @@ namespace MusicBeePlugin
         public string name { get; set; }
         public string value { get; set; }
         public bool inline { get; set; }
+
     }
 }
