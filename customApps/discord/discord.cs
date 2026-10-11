@@ -21,8 +21,15 @@ namespace MusicBeePlugin
         public class DiscordPay
         {
             public string content { get; set; }
-            public List<DiscordField> embeds { get; set; }
+            public List<DiscordEmbed> embeds { get; set; }
 
+        }
+
+        public class DiscordEmbed
+        {
+            public string title { get; set; }
+            public string description { get; set; }
+            public List<DiscordField> fields { get; set; }
         }
 
 
