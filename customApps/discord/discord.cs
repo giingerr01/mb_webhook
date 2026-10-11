@@ -2,6 +2,7 @@ using System;
 using System.Dynamic;
 using System.Globalization;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -16,7 +17,7 @@ namespace MusicBeePlugin
 
         public class DiscordPay
         {
-            public string Name { get; set; }
+            public string Title { get; set; }
             public string Album { get; set; }
 
         }
@@ -30,7 +31,7 @@ namespace MusicBeePlugin
         {
             try
             {
-                DiscordPay payload = new DiscordPay { Name = title, Album = album };
+                DiscordPay payload = new DiscordPay { Title = title, Album = album };
 
                 string jsonString = JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
 
