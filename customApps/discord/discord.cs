@@ -35,9 +35,9 @@ namespace MusicBeePlugin
 
                 string jsonString = JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
 
-                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var Data = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
+                httpClient.PostAsync(webhookUrl, Data).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
