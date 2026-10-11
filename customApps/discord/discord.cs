@@ -1,8 +1,11 @@
 using System;
+using System.ComponentModel;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -17,9 +20,17 @@ namespace MusicBeePlugin
 
         public class DiscordPay
         {
-            public string Title { get; set; }
-            public string Album { get; set; }
+            public string content { get; set; }
+            public List<DiscordField> embeds { get; set; }
 
+        }
+
+
+        public class DiscordField
+        {
+            public string name { get; set; }
+            public string value { get; set; }
+            public bool inline { get; set; }
         }
         public static void SendMessage(
             string webhookUrl,
@@ -31,7 +42,29 @@ namespace MusicBeePlugin
         {
             try
             {
-                DiscordPay payload = new DiscordPay { Title = title, Album = album };
+                DiscordPay payload = new DiscordPay
+                {
+                    content = "Now Playing",
+                    embeds = new List<DiscordEmbed>
+                    {
+                        new DiscordEmbed
+                        {
+                            title = title,
+                            description = "Artist: " + artist,
+                            fields = new List<DiscordField>
+                            {
+                                new DiscordField
+                                {
+                                    name = "Album",
+                                    value = string.IsNullOrWhiteSpace(album)
+                                    ?
+                                    "Unknown" : album,
+                                    inline = true
+                                }
+                            }
+                        }
+                    }
+                };
 
                 string jsonString = JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
 
