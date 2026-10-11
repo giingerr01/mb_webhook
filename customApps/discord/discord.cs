@@ -22,7 +22,8 @@ namespace MusicBeePlugin
             string webhookUrl,
             string artist,
             string title,
-            string album
+            string album,
+            string bitrate
             // string art
             )
 
@@ -32,17 +33,13 @@ namespace MusicBeePlugin
                 DiscordPay payload = new DiscordPay
                 {
                     username = "giingerr01",
+                    message = "Now Playing 🎶",
                     avatar_url = "https://i.imgur.com/AfFp7pu.png",
                     embeds = new List<DiscordEmbed>
 
                     {
                         new DiscordEmbed
                         {
-                            author = new EmbedAuthor
-                            {
-                                name = "Now Playing from MusicBee",
-                            },
-
                             title = title,
                             description = "by " + artist,
                             color = 3447003,
@@ -58,8 +55,8 @@ namespace MusicBeePlugin
                                 },
                                 new DiscordField
                                 {
-                                    name = "BITRATE",
-                                    value = "Playing",
+                                    name = "Bitrate",
+                                    value = bitrate,
                                     inline = true
                                 },
 
@@ -70,7 +67,7 @@ namespace MusicBeePlugin
                             },
                             thumbnail  = new EmbedThumbnail
                             {
-                                url = "coming soon"
+                                url = "https://i.imgur.com/AfFp7pu.png"
                             }
                         }
                     },
