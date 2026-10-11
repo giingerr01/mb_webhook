@@ -97,6 +97,7 @@
     <Compile Include="whook_plugin.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
+    <Compile Include="customApps\discord\DiscordModels\Models.cs"/>
     <Compile Include="SettingsPanel\settingsForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -40,7 +40,7 @@ namespace MusicBeePlugin
                         {
                             author = new EmbedAuthor
                             {
-                                name = "Now Playing from ***MusicBee***",
+                                name = "Now Playing from **MusicBee**",
                             },
 
                             title = title,
