@@ -61,7 +61,12 @@ namespace MusicBeePlugin
                                     name = "BITRATE",
                                     value = "Playing",
                                     inline = true
-                                }
+                                },
+
+                            },
+                            footer = new EmbedFooter
+                            {
+                                text = "Source: MusicBee"
                             }
                         }
                     },
