@@ -1,6 +1,7 @@
 # Build output
 /bin/
 /obj/
+/packages/
 /Debug/
 /Release/
 /x86/
