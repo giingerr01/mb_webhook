@@ -4,6 +4,7 @@ namespace MusicBeePlugin
 {
     public class DiscordPay
     {
+        public string message { get; set; }
         public string username { get; set; }
         public string avatar_url { get; set; }
         public string content { get; set; }
@@ -16,7 +17,7 @@ namespace MusicBeePlugin
     {
         public string title { get; set; }
         public int color { get; set; }
-        public EmbedAuthor author { get; set; }
+        // public EmbedAuthor author { get; set; }
         public EmbedFooter footer { get; set; }
         public EmbedThumbnail thumbnail { get; set; }
         public string description { get; set; }
@@ -33,11 +34,11 @@ namespace MusicBeePlugin
         public string text { get; set; }
     }
 
-    public class EmbedAuthor
-    {
-        public string name { get; set; }
-        public string description { get; set; }
-    }
+    // public class EmbedAuthor
+    // {
+    //     public string name { get; set; }
+    //     public string description { get; set; }
+    // }
 
     public class DiscordField
     {
