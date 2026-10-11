@@ -19,6 +19,15 @@ namespace MusicBeePlugin
             try
             {
 
+                string trackState =
+                "{"
+                + "\"content\":\"Now Playing: " + title
+                + " by " + artist
+                + " | Album: " + album + "\""
+                + "}";
+
+
+
                 var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
 
                 httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
