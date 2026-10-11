@@ -1,13 +1,25 @@
 using System;
+using System.Dynamic;
+using System.Globalization;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace MusicBeePlugin
 {
     public static class DiscordNotifier
     {
         private static readonly HttpClient httpClient = new HttpClient();
+
+        public class DiscordPay
+        {
+            public string Name { get; set; }
+            public string Album { get; set; }
+
+        }
         public static void SendMessage(
             string webhookUrl,
             string artist,
@@ -18,17 +30,11 @@ namespace MusicBeePlugin
         {
             try
             {
+                DiscordPay payload = new DiscordPay { Name = title, Album = album };
 
-                string trackState =
-                "{"
-                + "\"content\":\"Now Playing: " + title
-                + " by " + artist
-                + " | Album: " + album + "\""
-                + "}";
+                string jsonString = JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
 
-
-
-                var content = new StringContent(trackState, System.Text.Encoding.UTF8, "application/json");
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
                 httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
             }
