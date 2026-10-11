@@ -134,12 +134,15 @@ namespace MusicBeePlugin
                     string album =
                     mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
 
+                    string bitrate =
+                    mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
 
                     //a custom url for local post test 
                     TestPayload.SendAsync(
                         "http://localhost:3000/webhook",
                         artist,
                         title,
+                        bitrate,
                         album
                     );
 
@@ -149,7 +152,8 @@ namespace MusicBeePlugin
                         webhookUrl,
                         artist,
                         title,
-                        album
+                        album,
+                        bitrate
                         );
 
                     break;
