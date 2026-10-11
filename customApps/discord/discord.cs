@@ -21,6 +21,7 @@ namespace MusicBeePlugin
         public class DiscordPay
         {
             public string content { get; set; }
+            // public string art { get; set; }
             public List<DiscordEmbed> embeds { get; set; }
 
         }
@@ -44,8 +45,8 @@ namespace MusicBeePlugin
             string webhookUrl,
             string artist,
             string title,
-            string art,
             string album
+            // string art
             )
 
         {
@@ -53,8 +54,10 @@ namespace MusicBeePlugin
             {
                 DiscordPay payload = new DiscordPay
                 {
+                    art = art,
                     content = "Now Playing 🎶",
                     embeds = new List<DiscordEmbed>
+
                     {
                         new DiscordEmbed
                         {
@@ -73,7 +76,7 @@ namespace MusicBeePlugin
                                 }
                             }
                         }
-                    }
+                    },
                 };
 
                 string jsonString = JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
