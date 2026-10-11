@@ -29,6 +29,7 @@ namespace MusicBeePlugin
         {
             public string title { get; set; }
             public string description { get; set; }
+            public int color { get; set; }
             public List<DiscordField> fields { get; set; }
         }
 
@@ -43,6 +44,7 @@ namespace MusicBeePlugin
             string webhookUrl,
             string artist,
             string title,
+            string art,
             string album
             )
 
@@ -51,13 +53,14 @@ namespace MusicBeePlugin
             {
                 DiscordPay payload = new DiscordPay
                 {
-                    content = "Now Playing",
+                    content = "Now Playing 🎶",
                     embeds = new List<DiscordEmbed>
                     {
                         new DiscordEmbed
                         {
                             title = title,
                             description = "Artist: " + artist,
+                            color = 4384393,
                             fields = new List<DiscordField>
                             {
                                 new DiscordField
