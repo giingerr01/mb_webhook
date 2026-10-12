@@ -9,9 +9,9 @@ namespace MusicBeePlugin
 {
     public static class DiscordNotifier
     {
-        private static readonly object sync = new object();
+        // private static readonly object sync = new object();
 
-        private static string messageId;
+        // private static string messageId;
         private static readonly HttpClient httpClient = new HttpClient
         {
             Timeout = TimeSpan.FromSeconds(5)
@@ -30,7 +30,7 @@ namespace MusicBeePlugin
         {
             try
             {
-                DiscordPay payload = new DiscordPay
+                DiscordEmbeded embed = new DiscordEmbeded
                 {
                     username = "giingerr01",
                     content = "Now Playing 🎶",
@@ -73,7 +73,7 @@ namespace MusicBeePlugin
                     },
                 };
 
-                string jsonString = JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
+                string jsonString = JsonConvert.SerializeObject(embed, Newtonsoft.Json.Formatting.Indented);
 
                 var Data = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
