@@ -1,10 +1,11 @@
 using System;
 using System.Net.Http;
-using System.Collections;
+using System.Windows.Forms;
 using System.Text;
 using Newtonsoft.Json;
-using Microsoft.VisualBasic;
 using System.Diagnostics;
+using System.Json.Linq;
+using System.Text.Json.Nodes;
 
 
 namespace MusicBeePlugin
@@ -12,44 +13,29 @@ namespace MusicBeePlugin
     public static class ArtworkFetcher
     {
         private static readonly HttpClient httpClient = new HttpClient();
-        public class SearchTerm
+
+        public static string GetArtworkUrl(string artist, string title)
         {
-            public string albumTerm { get; set; }
-            public string artistTerm { get; set; }
-            public string titleTerm { get; set; }
+            try
+            {
+                string url = "https://itunes.apple.com/search"
+                + "?term=" + Uri.EscapeDataString(artist + " " + title)
+                + "&entity=song&limit=1";
+
+                string json = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
+
+                string art = (string)JsonObject.Parse(json).SelectToken("Results[0].artworkUrl100");
+
+                MessageBox.Show(art);
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Artwork lookup failed: " + ex.Message);
+                return null;
+            }
         }
-
-        public static void SendAsync(
-            string webhookUrl,
-            string artist,
-            string album,
-            string title
-        );
-
-        public static string BuildingSearchUrl(SearchTerm searchTerm)
-        {
-            string term =
-            $"{searchTerm.artistTerm}" +
-            $"{searchTerm.albumTerm}" +
-            $"{searchTerm.titleTerm}";
-
-            return "https://itunes.apple.com/search" +
-                   "?term=" + Uri.EscapeDataString(term) +
-                   "&entity=song" +
-                   "&limits=5" +
-                   "&country=IN";
-
-        }
-
-        var searchTerm = new ArtworkFetcher.SearchTerm
-        {
-            artistTerm = artist,
-            albumTerm = album,
-            titleTerm = title
-        };
-        string url = ArtworkFetcher.BuildingSearchUrl(searchTerm);
-
-
 
     }
 }

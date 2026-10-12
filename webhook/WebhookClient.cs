@@ -14,6 +14,7 @@ namespace MusicBeePlugin
         public WebhookClient()
         {
             _httpClient = new HttpClient();
+            Timeout = TimeSpan.FromSeconds(5);
         }
 
         public async Task SendAsync(string url, string json)
