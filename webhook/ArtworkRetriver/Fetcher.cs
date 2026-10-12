@@ -41,5 +41,15 @@ namespace MusicBeePlugin
 
         }
 
+        var searchTerm = new ArtworkFetcher.SearchTerm
+        {
+            artistTerm = artist,
+            albumTerm = album,
+            titleTerm = title
+        };
+        string url = ArtworkFetcher.BuildingSearchUrl(searchTerm);
+
+
+
     }
 }
