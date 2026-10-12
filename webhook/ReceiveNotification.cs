@@ -15,6 +15,7 @@ namespace MusicBeePlugin
 {
     public partial class Plugin
     {
+        public static string firstMessageId;
         public void ReceiveNotification(string sourceFileUrl, NotificationType type)
         {
             // perform some action depending on the notification type
@@ -60,33 +61,22 @@ namespace MusicBeePlugin
                             art
                         );
 
-                    });
-
-
-                    //a custom url for local post test 
-                    //post request to discord
-                    Task.Run(async () =>
-                    {
                         string artForDisco = ArtworkFetcher.GetArtworkUrl(artist, title, album);
-                        Logger.Log("Artwork for disco failed: " + artForDisco);
-                        await DiscordNotifier.SendMessage(
+                        string id = DiscordNotifier.SendMessage(
                             webhookUrl,
                             artist,
                             title,
                             album,
                             bitrate,
                             artForDisco
-                            );
+                        );
+                        Logger.Log("Discord Message Id: " + id);
+                        if (firstMessageId == null && id != null)
+                        {
+                            firstMessageId = id;
+                        }
                     });
                     break;
-
-                    // string art = mbApiInterface.NowPlaying_GetArtwork();
-
-
-                    // MessageBox.Show(
-                    // json
-                    // );
-                    // break;
             }
         }
     }
