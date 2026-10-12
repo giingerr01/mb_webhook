@@ -1,16 +1,9 @@
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Globalization;
-using System.Net.Http;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml;
+using System.Net.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MusicBeePlugin
 {
@@ -18,7 +11,7 @@ namespace MusicBeePlugin
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-        public static void SendMessage(
+        public static string SendMessage(
             string webhookUrl,
             string artist,
             string title,
@@ -34,7 +27,7 @@ namespace MusicBeePlugin
                 DiscordPay payload = new DiscordPay
                 {
                     username = "giingerr01",
-                    message = "Now Playing 🎶",
+                    content = "Now Playing 🎶",
                     avatar_url = "https://i.imgur.com/AfFp7pu.png",
                     embeds = new List<DiscordEmbed>
 
@@ -78,11 +71,27 @@ namespace MusicBeePlugin
 
                 var Data = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                httpClient.PostAsync(webhookUrl, Data).GetAwaiter().GetResult();
+                string url = webhookUrl.Contains("?")
+                ? webhookUrl + "&wait=true"
+                : webhookUrl + "?wait=true";
+
+                HttpResponseMessage response = httpClient.PostAsync(url, Data).GetAwaiter().GetResult();
+                string body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Logger.Log("Discord Error" + (int)response.StatusCode + ": " + body);
+                    return null;
+                }
+
+                return (string)JObject.Parse(body)["id"];
+
+
             }
             catch (Exception ex)
             {
-                Logger.Log("Error:" + ex.Message);
+                Logger.Log("Discord Send failed: " + ex.Message);
+                return null;
             }
         }
     }
