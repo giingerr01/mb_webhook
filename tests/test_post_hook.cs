@@ -22,8 +22,7 @@ namespace MusicBeePlugin
             public string Art { get; set; }
         }
 
-
-        public static void SendAsync(
+        public static async Task SendAsync(
             string webhookUrl,
             string artist,
             string title,
@@ -41,6 +40,7 @@ namespace MusicBeePlugin
 
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                 httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
+
             }
             catch (Exception ex)
             {
