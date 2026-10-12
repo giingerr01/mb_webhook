@@ -47,11 +47,11 @@ namespace MusicBeePlugin
                     string bitrate =
                     mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
 
-                    Task.Run(() =>
+                    Task.Run(async () =>
                     {
                         string art = ArtworkFetcher.GetArtworkUrl(artist, title, album);
                         Logger.Log("ArtworkUrl: " + art);
-                        TestPayload.SendAsync(
+                        await TestPayload.SendAsync(
                             "http://localhost:3000/webhook",
                             artist,
                             title,
@@ -65,11 +65,11 @@ namespace MusicBeePlugin
 
                     //a custom url for local post test 
                     //post request to discord
-                    Task.Run(() =>
+                    Task.Run(async () =>
                     {
                         string artForDisco = ArtworkFetcher.GetArtworkUrl(artist, title, album);
                         Logger.Log("Artwork for disco failed: " + artForDisco);
-                        DiscordNotifier.SendMessage(
+                        await DiscordNotifier.SendMessage(
                             webhookUrl,
                             artist,
                             title,
