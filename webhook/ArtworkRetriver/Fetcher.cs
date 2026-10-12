@@ -1,12 +1,6 @@
 using System;
 using System.Net.Http;
-using System.Windows.Forms;
-using System.Text;
-using Newtonsoft.Json;
-using System.Diagnostics;
-using System.Json.Linq;
-using System.Text.Json.Nodes;
-
+using Newtonsoft.Json.Linq;
 
 namespace MusicBeePlugin
 {
@@ -14,21 +8,19 @@ namespace MusicBeePlugin
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-        public static string GetArtworkUrl(string artist, string title)
+        public static string GetArtworkUrl(string artist, string title, string album)
         {
             try
             {
                 string url = "https://itunes.apple.com/search"
-                + "?term=" + Uri.EscapeDataString(artist + " " + title)
-                + "&entity=song&limit=1";
+                    + "?term=" + Uri.EscapeDataString(artist + " " + title + " " + album)
+                    + "&entity=song&limit=1";
 
                 string json = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
 
-                string art = (string)JsonObject.Parse(json).SelectToken("Results[0].artworkUrl100");
+                string art = (string)JObject.Parse(json).SelectToken("results[0].artworkUrl100");
 
-                MessageBox.Show(art);
-
-
+                return art;
             }
             catch (Exception ex)
             {
@@ -36,6 +28,5 @@ namespace MusicBeePlugin
                 return null;
             }
         }
-
     }
 }
