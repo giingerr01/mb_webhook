@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Runtime.Remoting.Channels;
 using System.Diagnostics;
 using System.Security;
@@ -46,25 +47,37 @@ namespace MusicBeePlugin
                     string bitrate =
                     mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
 
-                    //a custom url for local post test 
-                    TestPayload.SendAsync(
-                        "http://localhost:3000/webhook",
-                        artist,
-                        title,
-                        bitrate,
-                        album
-                    );
-
-
-                    //post request to discord
-                    DiscordNotifier.SendMessage(
-                        webhookUrl,
-                        artist,
-                        title,
-                        album,
-                        bitrate
+                    Task.Run(() =>
+                    {
+                        string art = ArtworkFetcher.GetArtworkUrl(artist, title, album);
+                        Logger.Log("ArtworkUrl: " + art);
+                        TestPayload.SendAsync(
+                            "http://localhost:3000/webhook",
+                            artist,
+                            title,
+                            bitrate,
+                            album,
+                            art
                         );
 
+                    });
+
+
+                    //a custom url for local post test 
+                    //post request to discord
+                    Task.Run(() =>
+                    {
+                        string artForDisco = ArtworkFetcher.GetArtworkUrl(artist, title, album);
+                        Logger.Log("Artwork for disco failed: " + artForDisco);
+                        DiscordNotifier.SendMessage(
+                            webhookUrl,
+                            artist,
+                            title,
+                            album,
+                            bitrate,
+                            artForDisco
+                            );
+                    });
                     break;
 
                     // string art = mbApiInterface.NowPlaying_GetArtwork();
