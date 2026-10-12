@@ -2,9 +2,8 @@ using System.Collections.Generic;
 
 namespace MusicBeePlugin
 {
-    public class DiscordPay
+    public class DiscordEmbeded
     {
-        public string message { get; set; }
         public string username { get; set; }
         public string avatar_url { get; set; }
         public string content { get; set; }
