@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Dynamic;
 
 namespace MusicBeePlugin
 {
@@ -10,28 +12,41 @@ namespace MusicBeePlugin
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-        public static async Task SendAsync(
-            string url,
+
+        public class TestPay
+        {
+            public string Artist { get; set; }
+            public string Title { get; set; }
+            public string Album { get; set; }
+            public string Bitrate { get; set; }
+            public string Art { get; set; }
+        }
+
+
+        public static void SendAsync(
+            string webhookUrl,
             string artist,
             string title,
-            string album
+            string bitrate,
+            string album,
+            string art
         )
 
         {
-            string json =
-            "{"
-            + "\"event:\":\"track_changed\","
-            + "\"artist:\":\"" + artist + "\","
-            + "\"title:\":\"" + title + "\","
-            + "\"album:\":\"" + album + "\""
-            + "}";
-
-            using (var content = new StringContent(
-                json, Encoding.UTF8, "application/json"
-            ))
+            try
             {
-                await httpClient.PostAsync(url, content);
+                TestPay testPay = new TestPay { Art = art, Bitrate = bitrate, Title = title, Album = album, Artist = artist };
+
+                string jsonString = JsonConvert.SerializeObject(testPay, Newtonsoft.Json.Formatting.Indented);
+
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
+            {
+                Logger.Log("Error:" + ex.Message);
             }
         }
+
     }
 }
