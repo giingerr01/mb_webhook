@@ -19,6 +19,7 @@ namespace MusicBeePlugin
             public string Title { get; set; }
             public string Album { get; set; }
             public string Bitrate { get; set; }
+            public string Art { get; set; }
         }
 
 
@@ -27,13 +28,14 @@ namespace MusicBeePlugin
             string artist,
             string title,
             string bitrate,
-            string album
+            string album,
+            string art
         )
 
         {
             try
             {
-                TestPay testPay = new TestPay { Bitrate = bitrate, Title = title, Album = album, Artist = artist };
+                TestPay testPay = new TestPay { Art = art, Bitrate = bitrate, Title = title, Album = album, Artist = artist };
 
                 string jsonString = JsonConvert.SerializeObject(testPay, Newtonsoft.Json.Formatting.Indented);
 
