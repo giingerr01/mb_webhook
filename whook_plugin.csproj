@@ -101,12 +101,12 @@
     <Compile Include="webhook\SaveSettings.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
-    <Compile Include="webhook\customApps\discord\DiscordModels\Models.cs"/>
+    <Compile Include="webhook\Apps\discord\DiscordModels\Models.cs"/>
     <Compile Include="webhook\SettingsPanel\settingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="webhook\customApps\discord\discord.cs" />
+    <Compile Include="webhook\Apps\discord\discord.cs" />
     <Compile Include="tests\test_post_hook.cs" />
   </ItemGroup>
   <ItemGroup>
