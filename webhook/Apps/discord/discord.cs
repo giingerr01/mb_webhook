@@ -9,7 +9,13 @@ namespace MusicBeePlugin
 {
     public static class DiscordNotifier
     {
-        private static readonly HttpClient httpClient = new HttpClient();
+        private static readonly object sync = new object();
+
+        private static string messageId;
+        private static readonly HttpClient httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(5)
+        };
 
         public static string SendMessage(
             string webhookUrl,
