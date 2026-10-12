@@ -23,7 +23,8 @@ namespace MusicBeePlugin
             string artist,
             string title,
             string album,
-            string bitrate
+            string bitrate,
+            string artForDisco
             // string art
             )
 
@@ -67,7 +68,7 @@ namespace MusicBeePlugin
                             },
                             thumbnail  = new EmbedThumbnail
                             {
-                                url = "https://i.imgur.com/AfFp7pu.png"
+                                url = artForDisco
                             }
                         }
                     },
