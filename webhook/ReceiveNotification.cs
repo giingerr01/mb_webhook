@@ -48,7 +48,7 @@ namespace MusicBeePlugin
                     string bitrate =
                     mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
 
-                    Task.Run(async () =>
+                    await Task.Run(async () =>
                     {
                         string art = ArtworkFetcher.GetArtworkUrl(artist, title, album);
                         Logger.Log("ArtworkUrl: " + art);
@@ -77,9 +77,18 @@ namespace MusicBeePlugin
                         }
                     });
 
-                    await SlackNotifier.SendAsync(
-                        SlackWebhookUrl
-                    );
+                    await Task.Run(async () =>
+                    {
+                        string artForSlack = ArtworkFetcher.GetArtworkUrl(artist, title, album);
+                        await SlackNotifier.SendAsync(
+                            SlackWebhookUrl,
+                            artist,
+                            title,
+                            album,
+                            bitrate,
+                            artForSlack
+                        );
+                    });
                     break;
             }
         }
