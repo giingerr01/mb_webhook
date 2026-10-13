@@ -23,7 +23,7 @@ namespace MusicBeePlugin
         }
 
         public static async Task SendAsync(
-            string webhookUrl,
+            string DiscordWebhokUrl,
             string artist,
             string title,
             string bitrate,
@@ -39,7 +39,7 @@ namespace MusicBeePlugin
                 string jsonString = JsonConvert.SerializeObject(testPay, Newtonsoft.Json.Formatting.Indented);
 
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                httpClient.PostAsync(webhookUrl, content).GetAwaiter().GetResult();
+                httpClient.PostAsync(DiscordWebhokUrl, content).GetAwaiter().GetResult();
 
             }
             catch (Exception ex)

@@ -27,7 +27,7 @@ namespace MusicBeePlugin
 
                 urlBox = new TextBox();
                 urlBox.Bounds = new Rectangle(70, 0, 300, urlBox.Height);
-                urlBox.Text = webhookUrl;
+                urlBox.Text = DiscordWebhookUrl;
 
                 configPanel.Controls.AddRange(new Control[] { prompt, urlBox });
             }
