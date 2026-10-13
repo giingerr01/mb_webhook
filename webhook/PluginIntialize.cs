@@ -25,7 +25,7 @@ namespace MusicBeePlugin
                 System.IO.Path.Combine(dataPath, "webhookUrl.txt");
             if (System.IO.File.Exists(urlFile))
             {
-                webhookUrl = System.IO.File.ReadAllText(urlFile).Trim();
+                DiscordWebhookUrl = System.IO.File.ReadAllText(urlFile).Trim();
             }
 
             Logger.FilePath = Path.Combine(dataPath, "webhook_plugin.log");

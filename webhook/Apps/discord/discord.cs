@@ -18,7 +18,7 @@ namespace MusicBeePlugin
         };
 
         public static string SendMessage(
-            string webhookUrl,
+            string DiscordWebhookUrl,
             string artist,
             string title,
             string album,
@@ -77,9 +77,9 @@ namespace MusicBeePlugin
 
                 var Data = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                string url = webhookUrl.Contains("?")
-                ? webhookUrl + "&wait=true"
-                : webhookUrl + "?wait=true";
+                string url = DiscordWebhookUrl.Contains("?")
+                ? DiscordWebhookUrl + "&wait=true"
+                : DiscordWebhookUrl + "?wait=true";
 
                 HttpResponseMessage response = httpClient.PostAsync(url, Data).GetAwaiter().GetResult();
                 string body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();

@@ -63,7 +63,7 @@ namespace MusicBeePlugin
 
                         string artForDisco = ArtworkFetcher.GetArtworkUrl(artist, title, album);
                         string id = DiscordNotifier.SendMessage(
-                            webhookUrl,
+                            DiscordWebhookUrl,
                             artist,
                             title,
                             album,

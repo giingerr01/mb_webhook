@@ -21,14 +21,14 @@ namespace MusicBeePlugin
         {
             if (urlBox != null)
             {
-                webhookUrl = urlBox.Text.Trim();
+                DiscordWebhookUrl = urlBox.Text.Trim();
             }
             // save any persistent settings in a sub-folder of this path
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
 
             string urlFile = System.IO.Path.Combine(dataPath, "webhookUrl.txt");
 
-            System.IO.File.WriteAllText(urlFile, webhookUrl);
+            System.IO.File.WriteAllText(urlFile, DiscordWebhookUrl);
         }
 
     }
