@@ -18,6 +18,7 @@ namespace MusicBeePlugin
         private MusicBeeApiInterface mbApiInterface;
         private PluginInfo about = new PluginInfo();
         private string DiscordWebhookUrl = "http://localhost:3000/webhook";
+        private string SlackWebhookUrl = "http://localhost:4000/slackweb";
         private TextBox urlBox;
         private WebhookClient webhookClient;
 
