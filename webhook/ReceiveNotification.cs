@@ -16,7 +16,7 @@ namespace MusicBeePlugin
     public partial class Plugin
     {
         public static string firstMessageId;
-        public void ReceiveNotification(string sourceFileUrl, NotificationType type)
+        public async Task ReceiveNotification(string sourceFileUrl, NotificationType type)
         {
             // perform some action depending on the notification type
             switch (type)
@@ -76,6 +76,10 @@ namespace MusicBeePlugin
                             firstMessageId = id;
                         }
                     });
+
+                    await SlackNotifier.SendAsync(
+                        SlackWebhookUrl
+                    );
                     break;
             }
         }
