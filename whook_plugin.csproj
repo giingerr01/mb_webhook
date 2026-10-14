@@ -93,22 +93,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logger.cs" />
     <Compile Include="MusicBeeInterface.cs" />
     <Compile Include="webhook\WhookPlugin.cs" />
-    <Compile Include="webhook\Configure.cs" />
-    <Compile Include="webhook\PluginIntialize.cs" />
-    <Compile Include="webhook\PlaybackEvents.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
-    <Compile Include="webhook\Apps\discord\DiscordModels\DiscordModels.cs"/>
+    <Compile Include="webhook\PlaybackEvents.cs" />
+    <Compile Include="webhook\PluginIntialize.cs" />
     <Compile Include="webhook\Apps\slack\slack.cs"/>
-    <Compile Include="webhook\Apps\slack\SlackModels\SlackModels.cs">
+    <Compile Include="webhook\PanelConfiguration.cs" />
+    <Compile Include="webhook\Apps\slack\SlackModels\SlackModels.cs"/>
+    <Compile Include="webhook\Apps\discord\DiscordModels\DiscordModels.cs" >
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="tests\test_post_hook.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="webhook\Apps\discord\Discord.cs" />
     <Compile Include="webhook\ArtworkRetriver\Itunes_Helper.cs" />
-    <Compile Include="tests\test_post_hook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
