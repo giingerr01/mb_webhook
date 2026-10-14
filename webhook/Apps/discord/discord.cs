@@ -4,6 +4,7 @@ using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
 
 namespace MusicBeePlugin
 {
@@ -81,22 +82,52 @@ namespace MusicBeePlugin
                 ? DiscordWebhookUrl + "&wait=true"
                 : DiscordWebhookUrl + "?wait=true";
 
+
                 HttpResponseMessage response = httpClient.PostAsync(url, Data).GetAwaiter().GetResult();
-                string body = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-
-                if (!response.IsSuccessStatusCode)
+                using (response)
                 {
-                    Logger.Log("Discord Error" + (int)response.StatusCode + ": " + body);
-                    return null;
+                    string body = response.Content.ReadAsStringAsync()
+                    .GetAwaiter()
+                    .GetResult();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Logger.Log(
+                            "Discord Error" +
+                            (int)response.StatusCode + ": " + body
+                            );
+                        return null;
+                    }
+                    JObject result = JObject.Parse(body);
+                    JToken idToken = result["id"];
+
+                    if (idToken == null)
+                    {
+                        Logger.Log("Discord response did not contain a message ID.");
+                        return null;
+                    }
+                    return idToken.Value<string>();
                 }
+            }
 
-                return (string)JObject.Parse(body)["id"];
-
-
+            catch (HttpRequestException ex)
+            {
+                Logger.Log("Discord HTTP request failed: " + ex);
+                return null;
+            }
+            catch (OperationCanceledException ex)
+            {
+                Logger.Log("Discord request timed out or was cancelled: " + ex);
+                return null;
+            }
+            catch (JsonException ex)
+            {
+                Logger.Log("Discord JSON error: " + ex);
+                return null;
             }
             catch (Exception ex)
             {
-                Logger.Log("Discord Send failed: " + ex.Message);
+                Logger.Log("Unexpected Error: " + ex.Message);
                 return null;
             }
         }
