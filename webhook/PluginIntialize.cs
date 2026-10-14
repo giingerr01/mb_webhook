@@ -20,11 +20,13 @@ namespace MusicBeePlugin
             mbApiInterface = new MusicBeeApiInterface();
             mbApiInterface.Initialise(apiInterfacePtr);
 
-            //logger for musicbee logtrace
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
+
+            // a sperate folder names webhook to store log traces and users url entered by them
             string Webhook = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(Webhook);
             string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
+            //logger for musicbee logtrace
             Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
 
             if (File.Exists(urlFile))
