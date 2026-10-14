@@ -13,7 +13,6 @@ namespace MusicBeePlugin
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
-
         public class TestPay
         {
             public string Artist { get; set; }
@@ -24,7 +23,7 @@ namespace MusicBeePlugin
         }
 
         public static async Task SendAsync(
-            string DiscordWebhokUrl,
+            string LocalWebhookUrl,
             string artist,
             string title,
             string bitrate,
@@ -43,12 +42,12 @@ namespace MusicBeePlugin
                     jsonString, Encoding.UTF8, "application/json"
                     ))
                 {
-                    using (HttpResponseMessage response = await httpClient.PostAsync(DiscordWebhokUrl, requestContent))
+                    using (HttpResponseMessage response = await httpClient.PostAsync(LocalWebhookUrl, requestContent))
                     {
                         string body = await response.Content.ReadAsStringAsync();
                         if (!response.IsSuccessStatusCode)
                         {
-                            Logger.Log("Local HTTP error: " + (int)response.StatusCode + body);
+                            Logger.Log("Local HTTP error: " + (int)response.StatusCode + ": " + body);
                             return;
                         }
                         Logger.Log("Local message send successfully.");
@@ -70,7 +69,7 @@ namespace MusicBeePlugin
             }
             catch (Exception ex)
             {
-                Logger.Log("Error:" + ex.Message);
+                Logger.Log("Unexpected Local webhook error: " + ex);
             }
         }
 
