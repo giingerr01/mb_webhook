@@ -102,8 +102,7 @@
     <Compile Include="webhook\WebhookClient.cs" />
     <Compile Include="webhook\Apps\discord\DiscordModels\DiscordModels.cs"/>
     <Compile Include="webhook\Apps\slack\slack.cs"/>
-    <Compile Include="webhook\Apps\slack\SlackModels\SlackModels.cs"/>
-    <Compile Include="webhook\SettingsPanel\SettingsForm.cs">
+    <Compile Include="webhook\Apps\slack\SlackModels\SlackModels.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
