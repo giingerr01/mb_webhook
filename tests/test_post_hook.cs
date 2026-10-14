@@ -4,6 +4,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Dynamic;
 
 namespace MusicBeePlugin
@@ -38,8 +39,33 @@ namespace MusicBeePlugin
 
                 string jsonString = JsonConvert.SerializeObject(testPay, Newtonsoft.Json.Formatting.Indented);
 
-                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                httpClient.PostAsync(DiscordWebhokUrl, content).GetAwaiter().GetResult();
+                using (var requestContent = new StringContent(
+                    jsonString, Encoding.UTF8, "application/json"
+                    ))
+                {
+                    using (HttpResponseMessage response = await httpClient.PostAsync(DiscordWebhokUrl, requestContent))
+                    {
+                        string body = await response.Content.ReadAsStringAsync();
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            Logger.Log("Local HTTP error: " + (int)response.StatusCode + body);
+                            return;
+                        }
+                        Logger.Log("Local message send successfully.");
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Logger.Log("Local host HTTP request failed: " + ex);
+            }
+            catch (OperationCanceledException ex)
+            {
+                Logger.Log("Local host request timed out or was cancelled: " + ex);
+            }
+            catch (JsonException ex)
+            {
+                Logger.Log("Local host JSON error: " + ex);
 
             }
             catch (Exception ex)
