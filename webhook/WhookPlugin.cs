@@ -21,7 +21,9 @@ namespace MusicBeePlugin
         private string DiscordWebhookUrl = "http://localhost:3000/webhook";
         private string SlackWebhookUrl = "http://localhost:4000/webhook";
         private TextBox urlBox;
+        private TextBox slackUrlBox;
         private WebhookClient webhookClient;
+
 
         // MusicBee is closing the plugin (plugin is being disabled by user or MusicBee is shutting down)
         public void Close(PluginCloseReason reason)
