@@ -60,5 +60,22 @@ namespace MusicBeePlugin
             about.ConfigurationPanelHeight = 60;   // height in pixels that musicbee should reserve in a panel for config settings. When set, a handle to an empty panel will be passed to the Configure function
             return about;
         }
+
+        // called by MusicBee when the user clicks Apply or Save in the MusicBee Preferences screen.
+        // its up to you to figure out whether anything has changed and needs updating
+        public void SaveSettings()
+        {
+            if (urlBox != null)
+            {
+                DiscordWebhookUrl = urlBox.Text.Trim();
+            }
+            // save any persistent settings in a sub-folder of this path
+            string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
+            string Webhook = Path.Combine(dataPath, "webhook");
+            Directory.CreateDirectory(Webhook);
+            string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
+            File.WriteAllText(urlFile, DiscordWebhookUrl);
+        }
     }
+
 }

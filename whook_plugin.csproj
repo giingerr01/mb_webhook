@@ -98,7 +98,6 @@
     <Compile Include="webhook\Configure.cs" />
     <Compile Include="webhook\PluginIntialize.cs" />
     <Compile Include="webhook\PlaybackEvents.cs" />
-    <Compile Include="webhook\SaveSettings.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
     <Compile Include="webhook\Apps\discord\DiscordModels\DiscordModels.cs"/>
