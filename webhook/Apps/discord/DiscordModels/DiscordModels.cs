@@ -21,6 +21,14 @@ namespace MusicBeePlugin
         public EmbedThumbnail thumbnail { get; set; }
         public string description { get; set; }
         public List<DiscordField> fields { get; set; }
+        public List<DiscordLine> lines { get; set; }
+    }
+
+    public class DiscordLine
+    {
+        public string name { get; set; }
+        public string value { get; set; }
+        public string inline { get; set; }
     }
 
     public class EmbedThumbnail
@@ -31,6 +39,7 @@ namespace MusicBeePlugin
     public class EmbedFooter
     {
         public string text { get; set; }
+        public string value { get; set; }
     }
 
     // public class EmbedAuthor

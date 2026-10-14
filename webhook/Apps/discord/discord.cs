@@ -5,6 +5,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace MusicBeePlugin
 {
@@ -60,12 +61,12 @@ namespace MusicBeePlugin
                                     value = bitrate,
                                     inline = true
                                 },
-
                             },
                             footer = new EmbedFooter
                             {
-                                text = "Source: MusicBee"
+                                text = "Source: MusicBee",
                             },
+
                             thumbnail  = new EmbedThumbnail
                             {
                                 url = artForDisco

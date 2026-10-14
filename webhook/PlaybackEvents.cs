@@ -53,7 +53,7 @@ namespace MusicBeePlugin
                         string art = ArtworkFetcher.GetArtworkUrl(artist, title, album);
                         Logger.Log("ArtworkUrl: " + art);
                         await TestPayload.SendAsync(
-                            "http://localhost:3000/webhook",
+                            LocalWebhookUrl,
                             artist,
                             title,
                             bitrate,
