@@ -21,20 +21,25 @@ namespace MusicBeePlugin
 
             //logger for musicbee logtrace
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
+            string Webhook = Path.Combine(dataPath, "webhook");
+            Directory.CreateDirectory(Webhook);
             string urlFile =
-                System.IO.Path.Combine(dataPath, "webhookUrl.txt");
+                System.IO.Path.Combine(dataPath, "webhook");
+
             if (System.IO.File.Exists(urlFile))
             {
                 DiscordWebhookUrl = System.IO.File.ReadAllText(urlFile).Trim();
             }
 
-            Logger.FilePath = Path.Combine(dataPath, "webhook_plugin.log");
+            //url txt file from the user
+            Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
             Logger.Log("Plugin intialised");
 
             // our client declaration
             webhookClient = new WebhookClient();
 
 
+            //webhook plgin metadata
             about.PluginInfoVersion = PluginInfoVersion;
             about.Name = "Webhook Plugin";
             about.Description = "A plugin that post track now playing status";

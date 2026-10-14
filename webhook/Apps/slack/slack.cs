@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Text;
 using System.Net.Http;
 using System.Diagnostics;
@@ -13,14 +14,7 @@ namespace MusicBeePlugin
         {
             Timeout = TimeSpan.FromSeconds(5)
         };
-        public class SlackLocal
-        {
-            public string Artist { get; set; }
-            public string Title { get; set; }
-            public string Album { get; set; }
-            public string Bitrate { get; set; }
-            public string Art { get; set; }
-        }
+
         public static async Task SendAsync(
             string SlackWebhookUrl,
             string artist,
@@ -33,17 +27,27 @@ namespace MusicBeePlugin
         {
             try
             {
-                SlackLocal slackLocal = new SlackLocal { Title = title, Album = album, Artist = artist, Bitrate = bitrate, Art = art };
-                string jsonString = JsonConvert.SerializeObject(slackLocal, Newtonsoft.Json.Formatting.Indented);
+                SlackMessage slackMessage = new SlackMessage
+                {
+                    text = $"Now playing: {title} by {artist} ",
+                };
+
+                string jsonString = JsonConvert.SerializeObject(slackMessage, Newtonsoft.Json.Formatting.Indented);
 
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-                await httpClient.PostAsync(SlackWebhookUrl, content);
+                try
+                {
+                    await httpClient.PostAsync(SlackWebhookUrl, content);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error at postAsync: " + ex.Message);
+                }
             }
             catch (Exception ex)
             {
                 Logger.Log("Error:" + ex.Message);
-
             }
         }
     }
