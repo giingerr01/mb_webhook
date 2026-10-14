@@ -26,9 +26,6 @@ namespace MusicBeePlugin
             string Webhook = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(Webhook);
             string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
-            //logger for musicbee logtrace
-            Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
-
             if (File.Exists(urlFile))
             {
                 DiscordWebhookUrl = File.ReadAllText(urlFile).Trim();
@@ -38,6 +35,19 @@ namespace MusicBeePlugin
                 Logger.Log("Discord webhook URL file not found; using the default URL.");
             }
 
+            //slackwebhok url  file saving method and paths
+            string slackUrlFile = Path.Combine(Webhook, "SlackWebhookUrl.txt");
+            if (File.Exists(slackUrlFile))
+            {
+                SlackWebhookUrl = File.ReadAllText(slackUrlFile).Trim();
+            }
+            else
+            {
+                Logger.Log("Slack Webhook URL file not found; using the default Url.");
+            }
+
+            //logger for musicbee logtrace
+            Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
             Logger.Log("Plugin intialised");
 
             // our client declaration
@@ -69,12 +79,23 @@ namespace MusicBeePlugin
             {
                 DiscordWebhookUrl = urlBox.Text.Trim();
             }
+
+            if (slackUrlBox != null)
+            {
+                SlackWebhookUrl = slackUrlBox.Text.Trim();
+            }
             // save any persistent settings in a sub-folder of this path
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string Webhook = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(Webhook);
+
+
             string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
             File.WriteAllText(urlFile, DiscordWebhookUrl);
+
+
+            string slackUrlFile = Path.Combine(Webhook, "SlackWebhookUrl.txt");
+            File.WriteAllText(slackUrlFile, SlackWebhookUrl);
         }
     }
 
