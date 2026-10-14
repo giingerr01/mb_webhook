@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Http;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MusicBeePlugin
 {
@@ -34,20 +35,38 @@ namespace MusicBeePlugin
 
                 string jsonString = JsonConvert.SerializeObject(slackMessage, Newtonsoft.Json.Formatting.Indented);
 
-                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                using (var content = new StringContent(jsonString, Encoding.UTF8, "application/json"))
+                {
+                    using (HttpResponseMessage response = await httpClient.PostAsync(SlackWebhookUrl, content))
+                    {
+                        string body = await response.Content.ReadAsStringAsync();
+                        if (!response.IsSuccessStatusCode)
+                        {
+                            Logger.Log(
+                                "Slack HTTP Error: " + (int)response.StatusCode + ": " + body
+                            );
+                            return;
+                        }
+                        Logger.Log("Slack Message Send successfully.");
+                    }
+                }
 
-                try
-                {
-                    await httpClient.PostAsync(SlackWebhookUrl, content);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Log("Error at postAsync: " + ex.Message);
-                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Logger.Log("Slack HTTP request Failed: " + ex);
+            }
+            catch (OperationCanceledException ex)
+            {
+                Logger.Log("Slack request Timed out or was cancelled: " + ex);
+            }
+            catch (JsonException ex)
+            {
+                Logger.Log("Slack JSON error: " + ex);
             }
             catch (Exception ex)
             {
-                Logger.Log("Error:" + ex.Message);
+                Logger.Log("Unexpected Slack Error: " + ex.Message);
             }
         }
     }
