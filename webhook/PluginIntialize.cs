@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Security;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
+using System.Linq.Expressions;
 
 namespace MusicBeePlugin
 {
@@ -23,16 +24,18 @@ namespace MusicBeePlugin
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string Webhook = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(Webhook);
-            string urlFile =
-                System.IO.Path.Combine(dataPath, "webhook");
+            string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
+            Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
 
-            if (System.IO.File.Exists(urlFile))
+            if (File.Exists(urlFile))
             {
-                DiscordWebhookUrl = System.IO.File.ReadAllText(urlFile).Trim();
+                DiscordWebhookUrl = File.ReadAllText(urlFile).Trim();
+            }
+            else
+            {
+                Logger.Log("Discord webhook URL file not found; using the default URL.");
             }
 
-            //url txt file from the user
-            Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
             Logger.Log("Plugin intialised");
 
             // our client declaration
