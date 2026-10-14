@@ -27,7 +27,7 @@ namespace MusicBeePlugin
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string Webhook = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(Webhook);
-            string urlFile = System.IO.Path.Combine(Webhook, "webhookUrl.txt");
+            string urlFile = System.IO.Path.Combine(Webhook, "DiscordWebhookUrl.txt");
             System.IO.File.WriteAllText(urlFile, DiscordWebhookUrl);
         }
 
