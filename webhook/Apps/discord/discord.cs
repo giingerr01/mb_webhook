@@ -19,14 +19,13 @@ namespace MusicBeePlugin
             Timeout = TimeSpan.FromSeconds(5)
         };
 
-        public static string SendMessage(
+        public static async Task<string> SendMessage(
             string DiscordWebhookUrl,
             string artist,
             string title,
             string album,
             string bitrate,
-            string artForDisco
-            // string art
+            string art
             )
 
         {
@@ -69,7 +68,7 @@ namespace MusicBeePlugin
 
                             thumbnail  = new EmbedThumbnail
                             {
-                                url = artForDisco
+                                url = art
                             }
                         }
                     },
