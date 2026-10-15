@@ -17,7 +17,7 @@ namespace MusicBeePlugin
         {
             this.Text = "webhook settings";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Height = 320;
+            this.Height = 160;
             this.Width = 320;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -28,7 +28,7 @@ namespace MusicBeePlugin
             prompt.Text = "Discord URL";
 
             urlBox = new TextBox();
-            urlBox.Bounds = new Rectangle(95, 18, 190, 20);
+            urlBox.Bounds = new Rectangle(95, 18, 190, 10);
             urlBox.Text = DiscordWebhookUrl;
 
             System.Windows.Forms.Label slackprompt = new System.Windows.Forms.Label();
@@ -37,7 +37,7 @@ namespace MusicBeePlugin
             slackprompt.Text = "Slack URL";
 
             slackUrlBox = new TextBox();
-            slackUrlBox.Bounds = new Rectangle(95, 53, 190, 20);
+            slackUrlBox.Bounds = new Rectangle(95, 53, 190, 10);
             slackUrlBox.Text = SlackWebhookUrl;
 
             Button saveButton = new Button();
