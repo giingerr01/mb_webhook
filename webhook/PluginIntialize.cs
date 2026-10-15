@@ -10,6 +10,7 @@ using System.Security;
 using System.Reflection.Emit;
 using Microsoft.VisualBasic;
 using System.Linq.Expressions;
+using System.Text.Json.Serialization;
 
 namespace MusicBeePlugin
 {
@@ -23,28 +24,37 @@ namespace MusicBeePlugin
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
 
             // a sperate folder names webhook to store log traces and users url entered by them
-            string Webhook = Path.Combine(dataPath, "webhook");
-            Directory.CreateDirectory(Webhook);
-            string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
-            if (File.Exists(urlFile))
+            string webhookFolder = Path.Combine(dataPath, "webhook");
+            Directory.CreateDirectory(webhookFolder);
+            string jsonFilePath = Path.Combine(webhookFolder, "DiscordWebhookUrl.txt");
+            if (File.Exists(jsonFilePath))
             {
-                DiscordWebhookUrl = File.ReadAllText(urlFile).Trim();
+                try
+                {
+                    string jsonContent = File.ReadAllText(jsonFilePath);
+                    WebhookUrls = JsonConvert
+                    .DeserializeObject<Dictionary
+                    <string, string>>
+                    (jsonContent)
+                    ?? new Dictionary<string, string>();
+                    Logger.Log("Webhook settings loaded successfully fro JSON.");
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("failed to parse webhooks.json: " + ex.Message);
+                    WebhookUrls = new Dictionary<string, string>();
+                }
             }
             else
             {
-                Logger.Log("Discord webhook URL file not found; using the default URL.");
+                Logger.Log("Webhook.json not found; intitalizign with empty settings");
+                MigratedOldTextFiles(webhookFolder);
             }
 
-            //slackwebhok url  file saving method and paths
-            string slackUrlFile = Path.Combine(Webhook, "SlackWebhookUrl.txt");
-            if (File.Exists(slackUrlFile))
-            {
-                SlackWebhookUrl = File.ReadAllText(slackUrlFile).Trim();
-            }
-            else
-            {
-                Logger.Log("Slack Webhook URL file not found; using the default Url.");
-            }
+            DiscordWebhookUrl = WebhookUrls.ContainsKey("discord") ?
+            WebhookUrls["discord"] : string.Empty;
+            SlackWebhookUrl = WebhookUrls.ContainsKey("slack") ?
+            WebhookUrls["slack"] : string.Empty;
 
             //logger for musicbee logtrace
             Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
@@ -52,7 +62,6 @@ namespace MusicBeePlugin
 
             // our client declaration
             webhookClient = new WebhookClient();
-
 
             //webhook plgin metadata
             about.PluginInfoVersion = PluginInfoVersion;
