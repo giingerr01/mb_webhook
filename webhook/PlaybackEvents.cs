@@ -73,7 +73,7 @@ namespace MusicBeePlugin
                         art
                     );
 
-                    string id = DiscordNotifier.SendMessage(
+                    string id = await DiscordNotifier.SendMessage(
                         DiscordWebhookUrl,
                         artist,
                         title,

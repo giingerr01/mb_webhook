@@ -5,7 +5,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace MusicBeePlugin
 {
