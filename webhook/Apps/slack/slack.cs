@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
+using System.Security.AccessControl;
 
 namespace MusicBeePlugin
 {
@@ -28,12 +30,36 @@ namespace MusicBeePlugin
         {
             try
             {
-                SlackMessage slackMessage = new SlackMessage
+                var slackMessage = new SlackMessage
                 {
-                    text = $"Now playing: {title} by {artist} ",
+                    text = $"Now Playing: {title} by {artist}",
+                    blocks = new List<SlackBlock>
+                    {
+                        new SlackBlock
+                        {
+                            type = "section",
+                            text = new SlackText
+                            {
+                                type = "mrkdwn",
+                                text = $"*NowPlaying on MusicBee*\n*Artist:* {artist}\n*{album}\n*Bitrate:* {bitrate}"
+                            },
+                            accessory = !string.IsNullOrEmpty(art) ?
+                            new SlackAccessory
+                            {
+                                type = "image",
+                                image_url = art,
+                                alt_text = "Album Art"
+                            } : null
+                        }
+                    }
                 };
 
-                string jsonString = JsonConvert.SerializeObject(slackMessage, Newtonsoft.Json.Formatting.Indented);
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                string jsonString = JsonConvert.SerializeObject(slackMessage, Newtonsoft.Json.Formatting.None, settings);
 
                 using (var content = new StringContent(jsonString, Encoding.UTF8, "application/json"))
                 {
