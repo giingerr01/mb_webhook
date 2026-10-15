@@ -69,24 +69,15 @@ namespace MusicBeePlugin
             about.MinInterfaceVersion = MinInterfaceVersion;
             about.MinApiRevision = MinApiRevision;
             about.ReceiveNotifications = (ReceiveNotificationFlags.PlayerEvents | ReceiveNotificationFlags.TagEvents);
-            about.ConfigurationPanelHeight = 60;
+            about.ConfigurationPanelHeight = 0;
             return about;
         }
 
         // Called by MusicBee when the user clicks Apply or Save.
         public void SaveSettings()
         {
-            if (urlBox != null)
-            {
-                DiscordWebhookUrl = urlBox.Text.Trim();
-                WebhookUrls["discord"] = DiscordWebhookUrl;
-            }
-
-            if (slackUrlBox != null)
-            {
-                SlackWebhookUrl = slackUrlBox.Text.Trim();
-                WebhookUrls["slack"] = SlackWebhookUrl;
-            }
+            WebhookUrls["discord"] = DiscordWebhookUrl;
+            WebhookUrls["slack"] = SlackWebhookUrl;
 
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string webhookFolder = Path.Combine(dataPath, "webhook");
