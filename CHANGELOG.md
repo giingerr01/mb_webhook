@@ -10,14 +10,15 @@ This document follows the repository's Git history and the implementation presen
 - [2026-10-12 — Project organization and artwork lookup](#2026-10-12--project-organization-and-artwork-lookup)
 - [2026-10-12–13 — Async work, Discord responses, and local delivery](#2026-10-1213--async-work-discord-responses-and-local-delivery)
 - [2026-10-13 — Slack prototype](#2026-10-13--slack-prototype)
+- [2026-10-14–16 — Webhook settings, Slack messages, and parallel delivery](#2026-10-1416--webhook-settings-slack-messages-and-parallel-delivery)
 - [Current architecture](#current-architecture)
 - [Current status and follow-up](#current-status-and-follow-up)
 
 ## History scope and branch map
 
-The history was reviewed across the available branches and refs. The checked-out `patch-work` branch and `origin/main` point to `8f9b25b` (the latest product commit covered here). The local `main` ref points to `c4a406c`, an ancestor of that checkout; it is 14 commits behind. `origin/feature-discord` points to `6842975` and its work is reachable from `origin/main` through merge commit `890ea6c`. The feature branch is therefore described as part of the merged product history, not as a separate current implementation.
+The history was reviewed across the two local product branches. `main` points to `3d3f57b`; the checked-out `perf/webhook-pipeline` is based on that commit and adds five product commits, ending at `b1024ee`. The branch-specific changes are summarized below. Agent/session checkpoint commits are not treated as feature milestones. Commit dates below come from Git metadata; the repository history does not establish release tags or evidence of a published version.
 
-Some refs are named for agent/session checkpoints rather than product branches. Those checkpoint commits are not treated as feature milestones. Commit dates below come from Git metadata. The repository history does not establish release tags or evidence of a published version; the former changelog's `0.1.0` heading should not be read as a verified release.
+Earlier sections record the history through the Slack prototype. The later `main` commits and `perf/webhook-pipeline` work are covered in the next section; the architecture and status sections describe the checked-out `b1024ee` source.
 
 ## 2026-10-08 — Project and plugin foundation
 
@@ -122,13 +123,13 @@ Commit messages cite asynchronous handling, performance, message-ID handling, an
 
 ### How it works
 
-On a track change, `ReceiveNotification` reads artist, title, album, and bitrate. It starts a `Task.Run` body for artwork lookup, a JSON POST to a hard-coded localhost endpoint, and a Discord POST; it does not await or retain that task. It separately awaits the Slack call added later. Discord appends `wait=true` to its webhook URL, reads the response body, logs non-success status codes, and parses the JSON `id` on success. `firstMessageId` is assigned only while it is `null`; the current source does not use it to edit or replace an earlier Discord message.
+At this stage of the history, on a track change `ReceiveNotification` read artist, title, album, and bitrate, then started an unawaited `Task.Run` body for artwork lookup, a JSON POST to a hard-coded localhost endpoint, and a Discord POST. It separately awaited the Slack call added later. Discord appended `wait=true` to its webhook URL, read the response body, logged non-success status codes, and parsed the JSON `id` on success. `firstMessageId` was assigned only while it was `null`; it was not used to edit or replace an earlier Discord message.
 
-The localhost JSON route is implemented by `TestPayload.SendAsync`, whose payload properties are `Artist`, `Title`, `Album`, `Bitrate`, and `Art`. Despite its `async Task` signature, this method blocks on `PostAsync` rather than awaiting it, and it does not inspect the response status. The separate `WebhookClient.SendAsync` does await `PostAsync`, but the current notification flow does not call it.
+The localhost JSON route is implemented by `TestPayload.SendAsync`, whose payload properties are `Artist`, `Title`, `Album`, `Bitrate`, and `Art`. At that earlier snapshot, the method blocked on `PostAsync` despite its `async Task` signature and did not inspect the response status. The current implementation awaits the POST and checks the response status. The separate `WebhookClient.SendAsync` also awaits `PostAsync`, but the notification flow does not call it.
 
 ### Engineering lessons
 
-`async` and `await` can keep a caller from blocking while I/O is in progress only when the asynchronous operation is actually awaited through the call chain. A `Task.Run` that is neither awaited nor observed is fire-and-forget: its completion and exceptions are not coordinated with MusicBee's callback. Mixing that pattern with synchronous waits can make execution order and error reporting harder to reason about. The commit messages use “asynchronous” and “performance,” but the current implementation does not demonstrate a fully non-blocking or measured improvement.
+`async` and `await` can keep a caller from blocking while I/O is in progress only when the asynchronous operation is actually awaited through the call chain. The earlier unawaited `Task.Run` was fire-and-forget, so its completion and exceptions were not coordinated with MusicBee's callback. Later commits coordinate the sends and share artwork, although the Discord HTTP path still blocks internally. The commit messages use “asynchronous” and “performance,” but the current implementation does not demonstrate a fully non-blocking or measured improvement.
 
 **Important commits**
 
@@ -152,7 +153,7 @@ The commits document adding Slack integration. They do not record a completed co
 
 ### How it works
 
-`SlackNotifier.SendAsync` serializes a `SlackLocal` object and posts it as JSON using a `HttpClient` with a five-second timeout. In the current source, the object contains fixed placeholder values (`NowPlaying = "Hii"` and `Hello = "4000 port"`); it receives only the Slack URL, not the track metadata. The URL defaults to a localhost endpoint in the plugin class and is not loaded from or saved to the settings file. The response status is not checked.
+At this point in the history, `SlackNotifier.SendAsync` serialized a `SlackLocal` object and posted it as JSON using a `HttpClient` with a five-second timeout. That prototype used fixed placeholder values (`NowPlaying = "Hii"` and `Hello = "4000 port"`), received only the Slack URL, and did not check the response status. The following section records the later replacement with track-specific content and persisted settings.
 
 ### Engineering lessons
 
@@ -165,37 +166,74 @@ Adding a destination requires more than creating its HTTP client: the event data
 - `3c9f4b2` — feat: add SlackWebhookUrl for Slack integration
 - `8f9b25b` — feat: implement SlackNotifier class for sending notifications to Slack
 
+## 2026-10-14–16 — Webhook settings, Slack messages, and parallel delivery
+
+### `main`: provider payloads and configurable destinations
+
+The `main` line extended the Slack prototype with track-specific structured messages and dedicated Discord/Slack payload models. The Slack message gained title, artist, album, bitrate, and optional album artwork; both provider senders gained response/error logging. Configuration was expanded to edit both webhook URLs and save/load them together from `webhook/webhooks.json` in MusicBee's persistent storage.
+
+The configuration and richer Slack payload replace the earlier prototype state described above: Slack no longer sends fixed placeholder text, and the settings form is now opened by the plugin's configuration entry point. These changes are present in `main` and inherited by `perf/webhook-pipeline`.
+
+**Important commits**
+
+- `dd20c70` — Add Slack webhook integration
+- `c7f4460` — Improve Discord response parsing and error logging
+- `9066fb0` — Add Slack response and error handling
+- `1148851` — Add track details and artwork to Slack notifications
+- `cdb5220` — Add structured Slack message and block models
+- `acfd3c2` — Save user-provided Discord and Slack webhook URLs
+- `9e7b76d` — Add the webhook configuration panel
+- `587f03f` — Store webhook settings as JSON
+- `71551f6` — Format Slack notifications with attachments and blocks
+- `3d3f57b` — Include album information in Slack messages
+
+### `perf/webhook-pipeline`: shared artwork and awaited concurrent sends
+
+Five commits on `perf/webhook-pipeline` refine track-change delivery. Artwork is looked up once and reused for all destinations. The Discord send method and its caller were converted to Task-based delivery and awaited, and local, Discord, and Slack sends are started together and awaited with `Task.WhenAll`. The notification handler adds logging wrappers around send exceptions and retains the first returned Discord message ID.
+
+These changes coordinate completion and avoid repeating the artwork request; they do not make every HTTP path fully non-blocking. In particular, the Discord notifier still synchronously waits on HTTP operations internally.
+
+**Commits**
+
+- `4ca87f2` — Resolve artwork once per track change
+- `f6a62d3` — Make the Discord send method asynchronous and clarify parameter naming
+- `9753c1e` — Await the Discord send call
+- `c00ce3c` — Run destination sends concurrently with `Task.WhenAll`
+- `b1024ee` — Add send exception logging wrappers and streamline notification handling
+
 ## Current architecture
 
-The following describes the code at `8f9b25b`, verified by source inspection:
+The following describes the checked-out `perf/webhook-pipeline` source at `b1024ee`, verified by source inspection:
 
 ```mermaid
 flowchart TD
     MB[MusicBee API] -->|TrackChanged| RN[Plugin.ReceiveNotification]
     RN --> META[Read artist, title, album, bitrate]
-    META -->|unawaited Task.Run| ART1[ArtworkFetcher: iTunes Search]
-    ART1 --> LOCAL[TestPayload: JSON POST to localhost:3000]
-    LOCAL --> ART2[ArtworkFetcher: iTunes Search again]
-    ART2 --> DISCORD[DiscordNotifier: embed POST]
+    META -->|awaited Task.Run| ART[ArtworkFetcher: iTunes Search once]
+    ART --> LOCAL[TestPayload: JSON POST]
+    ART --> DISCORD[DiscordNotifier: embed POST]
+    ART --> SLACK[SlackNotifier: track message POST]
+    LOCAL -->|awaited| ALL[Task.WhenAll]
+    DISCORD -->|awaited| ALL
+    SLACK -->|awaited| ALL
     DISCORD -->|successful response ID| ID[firstMessageId set once]
-    META -->|awaited| SLACK[SlackNotifier: fixed JSON POST]
-    SETTINGS[Configure and SaveSettings] -->|DiscordWebhookUrl in MusicBee storage| DISCORD
+    SETTINGS[Configure and SaveSettings] -->|Discord and Slack URLs in webhooks.json| DISCORD
+    SETTINGS --> SLACK
 ```
 
-`Plugin.Initialise` initializes the MusicBee API interface, loads the Discord webhook URL from `webhookUrl.txt` if present, sets the log-file path, and registers player and tag notifications. `Plugin.ReceiveNotification` handles startup and track-change notifications; the startup branch currently reads play state but takes no substantive action. On track change, the two outbound paths are started as shown above. Artwork lookup is performed twice per track rather than shared.
+`Plugin.Initialise` initializes the MusicBee API interface, loads Discord and Slack URLs from `webhooks.json` when present, sets the log-file path, and registers player and tag notifications. On track change, `ReceiveNotification` reads the metadata, looks up artwork once on a worker task, starts all three sends, and awaits their completion. Send wrappers log exceptions; Discord returns a message ID which is retained only if `firstMessageId` has not already been set. The startup branch reads play state but takes no substantive action.
 
 The main responsibilities are:
 
 - `webhook/WhookPlugin.cs` — shared partial `Plugin` fields and MusicBee plugin lifecycle members.
-- `webhook/PluginIntialize.cs` — MusicBee API initialization, persisted Discord URL loading, logging setup, and notification registration.
-- `webhook/ReceiveNotification.cs` — startup/track-change dispatch, metadata reads, and notification scheduling.
-- `webhook/Configure.cs` and `webhook/SaveSettings.cs` — Discord URL UI and persistence in MusicBee's persistent storage.
+- `webhook/PluginIntialize.cs` — MusicBee API initialization, persisted Discord and Slack URL loading, logging setup, and notification registration.
+- `webhook/PlaybackEvents.cs` — startup/track-change dispatch, metadata reads, artwork lookup, and coordinated notification sends.
+- `webhook/PanelConfiguration.cs` and `webhook/settingsPanel.cs` — Discord/Slack URL configuration UI; `SaveSettings` persists both values in MusicBee's persistent storage.
 - `webhook/ArtworkRetriver/Itunes_Helper.cs` — `ArtworkFetcher`, which queries iTunes and returns an artwork URL.
-- `webhook/Apps/discord/discord.cs` and `webhook/Apps/discord/DiscordModels/Models.cs` — Discord serialization, HTTP delivery, and embed data types.
-- `webhook/Apps/slack/slack.cs` — the Slack JSON payload and HTTP POST.
+- `webhook/Apps/discord/discord.cs` and `webhook/Apps/discord/DiscordModels/DiscordModels.cs` — Discord serialization, HTTP delivery, and embed data types.
+- `webhook/Apps/slack/slack.cs` and `webhook/Apps/slack/SlackModels/SlackModels.cs` — structured Slack payload construction and HTTP POST.
 - `webhook/WebhookClient.cs` — a generic JSON POST helper; it is instantiated during initialization but is not used by the current notification flow.
 - `Logger.cs` — timestamped, lock-protected append-to-file logging.
-- `webhook/settingsPanel/SettingsForm.cs` — a separate settings form included in the project; the current `Configure` implementation builds controls directly and does not use this form.
 
 The project targets .NET Framework 4.8 and references Newtonsoft.Json, Fody, and Costura.Fody. A `MusicBee.local.targets` import supports a local plugin-copy build target, so local build configuration may be needed to build without that target reporting a missing plugin directory.
 
@@ -205,10 +243,11 @@ The project targets .NET Framework 4.8 and references Newtonsoft.Json, Fody, and
 
 - MusicBee plugin initialization and registration for player/tag notifications.
 - Reading artist, title, album, and bitrate on track changes.
-- Discord embed construction, webhook POST, success-status check, and response-ID parsing.
+- Discord embed construction, webhook POST, success-status check, response-ID parsing, and first-ID retention.
+- Slack track message construction with optional artwork and HTTP response/error logging.
 - iTunes Search API artwork lookup using artist, title, and album.
-- JSON POST paths for a local endpoint and for Slack.
-- Discord URL settings persistence and file logging.
+- JSON POST paths for the local endpoint and provider webhooks; sends are awaited together.
+- Discord and Slack URL settings persistence and file logging.
 
 “Verified” here means the behavior is present in the checked-in source. It does not mean the plugin has been exercised in MusicBee or that the remote services accepted requests.
 
@@ -223,15 +262,14 @@ The file `tests/test_post_hook.cs` defines the `TestPayload` sender, but it has 
 
 ### Known issues and technical debt visible in the current source
 
-- Slack sends fixed placeholder content, and its URL is hard-coded rather than exposed through the settings UI or persisted.
-- The local POST URL is hard-coded at the call site. `TestPayload.SendAsync` blocks on HTTP despite its async signature and ignores the response status.
-- The track-change task is fire-and-forget. Discord delivery is synchronous, and artwork lookup blocks; exceptions and completion are not coordinated with the MusicBee callback.
-- Artwork is requested twice per track. HTTP calls outside the Discord and Slack clients have no explicit timeout set in this code.
-- Slack does not inspect its response status. The generic `WebhookClient` ignores its response status and is not used by the current flow.
+- The local POST URL remains hard-coded. `TestPayload.SendAsync` checks response status but its `HttpClient` has no explicit timeout configured.
+- The Discord notifier's async method still uses synchronous waits for the HTTP POST and response-body read, so awaiting it does not make that path fully non-blocking.
+- Artwork retrieval is synchronous internally and is run on a worker task; a lookup failure is logged and sends continue with no artwork.
+- The Discord and Slack URL settings are persisted, but the local endpoint has no corresponding setting. The provider URLs must be configured for a fresh storage directory.
+- The generic `WebhookClient` is instantiated but not used by the current notification flow.
 - `firstMessageId` is only assigned once and never used to update a message. The synchronization variables visible in history are commented out in the current notifier.
 - `Logger.Log` silently returns when no path is configured and suppresses file-write failures, limiting visibility into logging failures.
 - The existing `README.md` describes a service that receives incoming webhooks, which does not match the outbound MusicBee plugin implemented in source.
-- The separate `SettingsForm` is not wired into the current settings entry point; its constructor also initializes its textbox from the textbox's current value rather than the supplied URL argument.
 
 ### Planned features
 
@@ -239,8 +277,7 @@ No explicit future-work list or committed plan was found in the reviewed project
 
 ### Potential improvements (suggestions, not recorded plans)
 
-- Use awaited async HTTP operations consistently and decide explicitly how MusicBee's notification callback should coordinate or schedule delivery.
-- Share the artwork result across destinations, and apply explicit timeout/cancellation and status handling to every HTTP path.
-- Replace placeholder Slack content, make destination configuration explicit, and distinguish production endpoints from local test delivery.
+- Convert the Discord HTTP operations to genuinely asynchronous calls and decide explicitly how MusicBee's notification callback should coordinate or schedule delivery.
+- Make the local endpoint configurable and apply explicit timeout/cancellation handling consistently to every HTTP path.
 - Add automated tests for payload shape, response/error handling, artwork parsing, and settings persistence; add an integration test only where an appropriate local or test service is available.
-- Align the README and settings UI with the plugin's actual outbound behavior.
+- Align the README with the plugin's actual outbound behavior.
