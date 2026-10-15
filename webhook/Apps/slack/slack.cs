@@ -52,7 +52,10 @@ namespace MusicBeePlugin
                                     text = new SlackText
                                     {
                                         type = "mrkdwn",
-                                        text = $"*{title}*\n_{artist}_"
+                                        text =
+                                        $"*{title}*\n" +
+                                        $"_{artist}_\n\n" +
+                                        $"*Album*\n{album}\n"
                                     },
                                     accessory = !string.IsNullOrEmpty(art)
                                     ? new SlackAccessory
