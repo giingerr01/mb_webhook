@@ -73,7 +73,7 @@ namespace MusicBeePlugin
             return about;
         }
 
-        // Called by MusicBee when the user clicks Apply or Save in the MusicBee Preferences screen.
+        // Called by MusicBee when the user clicks Apply or Save.
         public void SaveSettings()
         {
             if (urlBox != null)

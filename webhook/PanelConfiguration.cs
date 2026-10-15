@@ -18,31 +18,15 @@ namespace MusicBeePlugin
         {
             if (panelHandle != IntPtr.Zero)
             {
-                Panel configPanel = (Panel)Panel.FromHandle(panelHandle);
+                using (var form = new SettingsForm())
+                {
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
 
-                System.Windows.Forms.Label prompt = new System.Windows.Forms.Label();
-                prompt.AutoSize = true;
-                prompt.Location = new Point(0, 2);
-                prompt.Text = "Discord URL";
-
-                urlBox = new TextBox();
-                urlBox.Bounds = new Rectangle(80, 0, 200, urlBox.Height);
-                urlBox.Text = DiscordWebhookUrl;
-
-                configPanel.Controls.AddRange(new Control[] { prompt, urlBox });
-
-                System.Windows.Forms.Label slackprompt = new System.Windows.Forms.Label();
-                slackprompt.AutoSize = true;
-                slackprompt.Location = new Point(0, 25);
-                slackprompt.Text = "Slack URL";
-
-                slackUrlBox = new TextBox();
-                slackUrlBox.Bounds = new Rectangle(80, 25, 200, slackUrlBox.Height);
-                slackUrlBox.Text = SlackWebhookUrl;
-
-                configPanel.Controls.AddRange(new Control[] { slackprompt, slackUrlBox });
+                    }
+                }
             }
-            return false;
+            return true;
         }
     }
 }

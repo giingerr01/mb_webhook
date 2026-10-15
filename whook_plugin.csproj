@@ -96,6 +96,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="MusicBeeInterface.cs" />
     <Compile Include="webhook\WhookPlugin.cs" />
+    <Compile Include="webhook\settingsPanel.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
     <Compile Include="webhook\PlaybackEvents.cs" />
     <Compile Include="webhook\PluginIntialize.cs" />
