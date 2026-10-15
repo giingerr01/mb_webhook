@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Data.Common;
 
 namespace MusicBeePlugin
 {
@@ -64,7 +65,7 @@ namespace MusicBeePlugin
                     );
 
                     Logger.Log("ArtworkUrl: " + art);
-                    await TestPayload.SendAsync(
+                    Task localTask = TestPayload.SendAsync(
                         LocalWebhookUrl,
                         artist,
                         title,
@@ -73,7 +74,7 @@ namespace MusicBeePlugin
                         art
                     );
 
-                    string id = await DiscordNotifier.SendMessage(
+                    Task<string> discordTask = DiscordNotifier.SendMessage(
                         DiscordWebhookUrl,
                         artist,
                         title,
@@ -81,13 +82,7 @@ namespace MusicBeePlugin
                         bitrate,
                         art
                     );
-                    Logger.Log("Discord Message Id: " + id);
-                    if (firstMessageId == null && id != null)
-                    {
-                        firstMessageId = id;
-                    }
-
-                    await SlackNotifier.SendAsync(
+                    Task slackTask = SlackNotifier.SendAsync(
                         SlackWebhookUrl,
                         artist,
                         title,
@@ -95,6 +90,20 @@ namespace MusicBeePlugin
                         bitrate,
                         art
                     );
+
+                    await Task.WhenAll(
+                        localTask,
+                        discordTask,
+                        slackTask
+                    );
+
+                    string id = await discordTask;
+                    Logger.Log("Discord Message Id: " + id);
+
+                    if (firstMessageId == null && id != null)
+                    {
+                        firstMessageId = id;
+                    }
                     break;
             }
         }
