@@ -20,8 +20,6 @@ namespace MusicBeePlugin
         private string LocalWebhookUrl = "http://localhost:3000/webhook";
         private string DiscordWebhookUrl = "http://localhost:3000/webhook";
         private string SlackWebhookUrl = "http://localhost:4000/webhook";
-        private TextBox urlBox;
-        private TextBox slackUrlBox;
         private WebhookClient webhookClient;
 
 
