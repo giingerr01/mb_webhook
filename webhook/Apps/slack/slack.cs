@@ -22,6 +22,7 @@ namespace MusicBeePlugin
             string bitrate,
             string art)
         {
+            // slack webhook json payload structure
             try
             {
                 var slackMessage = new SlackMessage
