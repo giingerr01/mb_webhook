@@ -43,47 +43,58 @@ namespace MusicBeePlugin
                     string bitrate =
                     mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
 
-                    await Task.Run(async () =>
+                    string art = null;
+                    try
                     {
-                        string art = ArtworkFetcher.GetArtworkUrl(artist, title, album);
+                        art = await Task.Run(() =>
+                        ArtworkFetcher.GetArtworkUrl(
+                            artist,
+                            title,
+                            album
+                        ));
                         Logger.Log("ArtworkUrl: " + art);
-                        await TestPayload.SendAsync(
-                            LocalWebhookUrl,
-                            artist,
-                            title,
-                            bitrate,
-                            album,
-                            art
-                        );
-
-                        string artForDisco = ArtworkFetcher.GetArtworkUrl(artist, title, album);
-                        string id = DiscordNotifier.SendMessage(
-                            DiscordWebhookUrl,
-                            artist,
-                            title,
-                            album,
-                            bitrate,
-                            artForDisco
-                        );
-                        Logger.Log("Discord Message Id: " + id);
-                        if (firstMessageId == null && id != null)
-                        {
-                            firstMessageId = id;
-                        }
-                    });
-
-                    await Task.Run(async () =>
+                    }
+                    catch (Exception ex)
                     {
-                        string artForSlack = ArtworkFetcher.GetArtworkUrl(artist, title, album);
-                        await SlackNotifier.SendAsync(
-                            SlackWebhookUrl,
-                            artist,
-                            title,
-                            album,
-                            bitrate,
-                            artForSlack
-                        );
-                    });
+                        Logger.Log("Artwork Lookup failed: " + ex);
+                    }
+
+                    art = await Task.Run(() =>
+                        ArtworkFetcher.GetArtworkUrl(artist, title, album)
+                    );
+
+                    Logger.Log("ArtworkUrl: " + art);
+                    await TestPayload.SendAsync(
+                        LocalWebhookUrl,
+                        artist,
+                        title,
+                        bitrate,
+                        album,
+                        art
+                    );
+
+                    string id = DiscordNotifier.SendMessage(
+                        DiscordWebhookUrl,
+                        artist,
+                        title,
+                        album,
+                        bitrate,
+                        art
+                    );
+                    Logger.Log("Discord Message Id: " + id);
+                    if (firstMessageId == null && id != null)
+                    {
+                        firstMessageId = id;
+                    }
+
+                    await SlackNotifier.SendAsync(
+                        SlackWebhookUrl,
+                        artist,
+                        title,
+                        album,
+                        bitrate,
+                        art
+                    );
                     break;
             }
         }
