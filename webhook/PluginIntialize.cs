@@ -80,6 +80,7 @@ namespace MusicBeePlugin
                 DiscordWebhookUrl = urlBox.Text.Trim();
             }
 
+            // save url
             if (slackUrlBox != null)
             {
                 SlackWebhookUrl = slackUrlBox.Text.Trim();
@@ -89,11 +90,12 @@ namespace MusicBeePlugin
             string Webhook = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(Webhook);
 
-
+            //url saving path for discordwebhook url from users input
             string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
             File.WriteAllText(urlFile, DiscordWebhookUrl);
 
 
+            // saving url path for slackwebhokk url for from user input
             string slackUrlFile = Path.Combine(Webhook, "SlackWebhookUrl.txt");
             File.WriteAllText(slackUrlFile, SlackWebhookUrl);
         }
