@@ -59,7 +59,7 @@ namespace MusicBeePlugin
             about.Name = "Webhook Plugin";
             about.Description = "A plugin that post track now playing status";
             about.Author = "giingerr01";
-            about.TargetApplication = "MusicBee";   //  the name of a Plugin Storage device or panel header for a dockable panel
+            about.TargetApplication = "MusicBee";
             about.Type = PluginType.General;
             about.VersionMajor = 1;  // your plugin version
             about.VersionMinor = 0;
@@ -67,12 +67,10 @@ namespace MusicBeePlugin
             about.MinInterfaceVersion = MinInterfaceVersion;
             about.MinApiRevision = MinApiRevision;
             about.ReceiveNotifications = (ReceiveNotificationFlags.PlayerEvents | ReceiveNotificationFlags.TagEvents);
-            about.ConfigurationPanelHeight = 60;   // height in pixels that musicbee should reserve in a panel for config settings. When set, a handle to an empty panel will be passed to the Configure function
+            about.ConfigurationPanelHeight = 60;
             return about;
         }
 
-        // called by MusicBee when the user clicks Apply or Save in the MusicBee Preferences screen.
-        // its up to you to figure out whether anything has changed and needs updating
         public void SaveSettings()
         {
             if (urlBox != null)
