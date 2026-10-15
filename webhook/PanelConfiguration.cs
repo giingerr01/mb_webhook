@@ -16,17 +16,17 @@ namespace MusicBeePlugin
     {
         public bool Configure(IntPtr panelHandle)
         {
-            if (panelHandle != IntPtr.Zero)
+            using (SettingsForm configForm = new SettingsForm(DiscordWebhookUrl, SlackWebhookUrl))
             {
-                using (var form = new SettingsForm())
+                if (configForm.ShowDialog() == DialogResult.OK)
                 {
-                    if (form.ShowDialog() == DialogResult.OK)
-                    {
+                    DiscordWebhookUrl = configForm.urlBox.Text.Trim();
+                    SlackWebhookUrl = configForm.slackUrlBox.Text.Trim();
 
-                    }
+                    SaveSettings();
                 }
             }
-            return true;
+            return false;
         }
     }
 }
