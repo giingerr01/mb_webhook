@@ -4,73 +4,66 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Channels;
-using System.Diagnostics;
-using System.Security;
-using System.Reflection.Emit;
-using Microsoft.VisualBasic;
-using System.Linq.Expressions;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MusicBeePlugin
 {
     public partial class Plugin
     {
+        // Dictionary to store service names and their corresponding URLs
+        public Dictionary<string, string> WebhookUrls { get; set; } = new Dictionary<string, string>();
+
         public PluginInfo Initialise(IntPtr apiInterfacePtr)
         {
             mbApiInterface = new MusicBeeApiInterface();
             mbApiInterface.Initialise(apiInterfacePtr);
 
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
-
-            // a sperate folder names webhook to store log traces and users url entered by them
             string webhookFolder = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(webhookFolder);
-            string jsonFilePath = Path.Combine(webhookFolder, "DiscordWebhookUrl.txt");
+
+            // Path for the single JSON configuration file
+            string jsonFilePath = Path.Combine(webhookFolder, "webhooks.json");
+
             if (File.Exists(jsonFilePath))
             {
                 try
                 {
                     string jsonContent = File.ReadAllText(jsonFilePath);
-                    WebhookUrls = JsonConvert
-                    .DeserializeObject<Dictionary
-                    <string, string>>
-                    (jsonContent)
-                    ?? new Dictionary<string, string>();
-                    Logger.Log("Webhook settings loaded successfully fro JSON.");
+                    WebhookUrls = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonContent) ?? new Dictionary<string, string>();
+                    Logger.Log("Webhook settings loaded successfully from JSON.");
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("failed to parse webhooks.json: " + ex.Message);
+                    Logger.Log("Failed to parse webhooks.json: " + ex.Message);
                     WebhookUrls = new Dictionary<string, string>();
                 }
             }
             else
             {
-                Logger.Log("Webhook.json not found; intitalizign with empty settings");
-                MigratedOldTextFiles(webhookFolder);
+                Logger.Log("webhooks.json not found; initializing with empty settings.");
+                // Fallback: migrate old text files if they exist
             }
 
-            DiscordWebhookUrl = WebhookUrls.ContainsKey("discord") ?
-            WebhookUrls["discord"] : string.Empty;
-            SlackWebhookUrl = WebhookUrls.ContainsKey("slack") ?
-            WebhookUrls["slack"] : string.Empty;
+            // Assign individual variables or access directly from the dictionary as needed
+            DiscordWebhookUrl = WebhookUrls.ContainsKey("discord") ? WebhookUrls["discord"] : string.Empty;
+            SlackWebhookUrl = WebhookUrls.ContainsKey("slack") ? WebhookUrls["slack"] : string.Empty;
 
-            //logger for musicbee logtrace
-            Logger.FilePath = Path.Combine(Webhook, "webhook_plugin_log.log");
-            Logger.Log("Plugin intialised");
+            // Logger for musicbee logtrace
+            Logger.FilePath = Path.Combine(webhookFolder, "webhook_plugin_log.log");
+            Logger.Log("Plugin initialised");
 
-            // our client declaration
+            // Our client declaration
             webhookClient = new WebhookClient();
 
-            //webhook plgin metadata
+            // Webhook plugin metadata
             about.PluginInfoVersion = PluginInfoVersion;
             about.Name = "Webhook Plugin";
-            about.Description = "A plugin that post track now playing status";
+            about.Description = "A plugin that posts track now playing status";
             about.Author = "giingerr01";
             about.TargetApplication = "MusicBee";
             about.Type = PluginType.General;
-            about.VersionMajor = 1;  // your plugin version
+            about.VersionMajor = 1;
             about.VersionMinor = 0;
             about.Revision = 0;
             about.MinInterfaceVersion = MinInterfaceVersion;
@@ -80,32 +73,30 @@ namespace MusicBeePlugin
             return about;
         }
 
+        // Called by MusicBee when the user clicks Apply or Save in the MusicBee Preferences screen.
         public void SaveSettings()
         {
             if (urlBox != null)
             {
                 DiscordWebhookUrl = urlBox.Text.Trim();
+                WebhookUrls["discord"] = DiscordWebhookUrl;
             }
 
-            // save url
             if (slackUrlBox != null)
             {
                 SlackWebhookUrl = slackUrlBox.Text.Trim();
+                WebhookUrls["slack"] = SlackWebhookUrl;
             }
-            // save any persistent settings in a sub-folder of this path
+
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
-            string Webhook = Path.Combine(dataPath, "webhook");
-            Directory.CreateDirectory(Webhook);
+            string webhookFolder = Path.Combine(dataPath, "webhook");
+            Directory.CreateDirectory(webhookFolder);
 
-            //url saving path for discordwebhook url from users input
-            string urlFile = Path.Combine(Webhook, "DiscordWebhookUrl.txt");
-            File.WriteAllText(urlFile, DiscordWebhookUrl);
+            string jsonFilePath = Path.Combine(webhookFolder, "webhooks.json");
+            string jsonContent = JsonConvert.SerializeObject(WebhookUrls, Formatting.Indented);
 
-
-            // saving url path for slackwebhokk url for from user input
-            string slackUrlFile = Path.Combine(Webhook, "SlackWebhookUrl.txt");
-            File.WriteAllText(slackUrlFile, SlackWebhookUrl);
+            File.WriteAllText(jsonFilePath, jsonContent);
+            Logger.Log("Webhook settings saved to webhooks.json.");
         }
     }
-
 }
