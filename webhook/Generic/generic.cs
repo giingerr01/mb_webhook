@@ -10,7 +10,7 @@ using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace MusicBeePlugin
 {
-    public static class TestPayload
+    public static class GenericWebhook
     {
         private static readonly HttpClient httpClient = new HttpClient()
         {
@@ -30,6 +30,8 @@ namespace MusicBeePlugin
             int year,
             string genre,
             string bitrate,
+            string format,
+            string sampleRateHz,
             string album,
             string art
         )
@@ -37,12 +39,24 @@ namespace MusicBeePlugin
         {
             try
             {
-                DiscordPayload discordPayload = new DiscordPayload
+                GenericPayload genericPayload = new GenericPayload
                 {
-
+                    Greet = greet,
+                    Position = positionMs,
+                    Duration = durationMs,
+                    Artist = artist,
+                    Title = title,
+                    AlbumArtist = albumArtist,
+                    Year = year,
+                    Genre = genre,
+                    Bitrate = bitrate,
+                    SampleRateHz = sampleRateHz,
+                    Format = format,
+                    Album = album,
+                    Art = art
                 };
 
-                string jsonString = JsonConvert.SerializeObject(discordPayload, Newtonsoft.Json.Formatting.Indented);
+                string jsonString = JsonConvert.SerializeObject(genericPayload, Newtonsoft.Json.Formatting.Indented);
 
                 using (var requestContent = new StringContent(
                     jsonString, Encoding.UTF8, "application/json"
