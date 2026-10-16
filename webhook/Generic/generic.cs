@@ -21,7 +21,6 @@ namespace MusicBeePlugin
 
         public static async Task SendAsync(
             string LocalWebhookUrl,
-            string greet,
             long positionMs,
             long durationMs,
             string artist,
@@ -39,21 +38,42 @@ namespace MusicBeePlugin
         {
             try
             {
-                GenericPayload genericPayload = new GenericPayload
+                var genericPayload = new GenericPayload
                 {
-                    Greet = greet,
-                    Position = positionMs,
-                    Duration = durationMs,
-                    Artist = artist,
-                    Title = title,
-                    AlbumArtist = albumArtist,
-                    Year = year,
-                    Genre = genre,
-                    Bitrate = bitrate,
-                    SampleRateHz = sampleRateHz,
-                    Format = format,
-                    Album = album,
-                    Art = art
+                    SchemaVersion = 1,
+                    Event = "track_changed",
+                    TimeStamp = DateTimeOffset.Now.ToString("o"),
+
+                    Player = new PlayerPayload
+                    {
+                        Name = "MusicBee"
+                    },
+
+                    Track = new TrackPayload
+                    {
+                        Title = title,
+                        Artist = artist,
+                        Album = album,
+                        AlbumArtist = albumArtist,
+                        Genre = genre,
+                        Year = year,
+                        DurationMs = durationMs
+                    },
+
+                    Audio = new AudioPayload
+                    {
+                        BitrateKbps = bitrate,
+                        SampleRateHz = sampleRateHz,
+                        // bitdepth = null
+                        // channels = null 
+                        Codec = format
+
+                    },
+
+                    Artwork = new ArtworkPayload
+                    {
+                        Url = art,
+                    }
                 };
 
                 string jsonString = JsonConvert.SerializeObject(genericPayload, Newtonsoft.Json.Formatting.Indented);
