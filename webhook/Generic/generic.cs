@@ -70,26 +70,26 @@ namespace MusicBeePlugin
                             Logger.Log("Local HTTP error: " + (int) response.StatusCode + ": " + body);
                             return;
                         }
-                        Logger.Log("Local message send successfully.");
+                        Logger.Log("Generic Payload sent successfully.");
                     }
                 }
             }
             catch (HttpRequestException ex)
             {
-                Logger.Log("Local host HTTP request failed: " + ex);
+                Logger.Log("Generic host HTTP request failed: " + ex);
             }
             catch (OperationCanceledException ex)
             {
-                Logger.Log("Local host request timed out or was cancelled: " + ex);
+                Logger.Log("Generic host request timed out or was cancelled: " + ex);
             }
             catch (JsonException ex)
             {
-                Logger.Log("Local host JSON error: " + ex);
+                Logger.Log("Generic host JSON error: " + ex);
 
             }
             catch (Exception ex)
             {
-                Logger.Log("Unexpected Local webhook error: " + ex);
+                Logger.Log("Unexpected Generic webhook error: " + ex);
             }
         }
 
