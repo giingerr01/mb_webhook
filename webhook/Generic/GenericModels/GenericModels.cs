@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MusicBeePlugin
 {
-    public class DiscordPayload
+    public class GenericPayload
     {
         public string Greet { get; set; }
         public long Position { get; set; }
