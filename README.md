@@ -1,54 +1,88 @@
 # MusicBee Webhook Plugin
 
-`mb_webhook` is a Windows plugin for MusicBee that sends now-playing track information to Discord and Slack webhooks. It is a MusicBee plugin, not a standalone HTTP service.
+`mb_webhook` is a Windows plugin for [MusicBee](https://getmusicbee.com/) that sends a now-playing notification when the track changes. It can post formatted messages to Discord and Slack, and send a JSON payload to a custom webhook endpoint.
+
+The project targets .NET Framework 4.8. Version metadata is currently `1.0.0`; a prebuilt download has not yet been published, so build the plugin from source using the instructions below.
 
 ## Features
 
-- Sends track title, artist, album, and bitrate to Discord and Slack.
-- Looks up album artwork and includes it in supported messages.
-- Sends notifications to configured Discord and Slack webhook URLs.
-- Saves webhook settings in MusicBee's persistent storage.
-- Sends an additional JSON payload to a local development endpoint at `http://localhost:3000/webhook`.
+- Sends track title, artist, album, bitrate, and available album artwork to Discord and Slack.
+- Sends track metadata as JSON to a configurable custom webhook.
+- Looks up artwork through the iTunes Search API.
+- Provides a MusicBee settings dialog for the three webhook URLs.
+- Saves settings and plugin logs under MusicBee's persistent storage directory.
 
-The local endpoint is optional and is not included in this repository. If nothing is listening there, the plugin logs the failed request; Discord and Slack delivery can still be configured independently.
+Notifications are sent on track changes. This plugin sends outbound HTTP requests; it does not host a webhook server.
 
-## Installation
+## Requirements
 
-There is currently no installer or prebuilt plugin binary in this repository. Build the plugin from source, then install its DLL:
+- Windows and MusicBee
+- Visual Studio with the **.NET desktop development** workload
+- The **.NET Framework 4.8 Developer Pack**
+- NuGet package restore
 
-1. Install Visual Studio with the **.NET desktop development** workload and the **.NET Framework 4.8 Developer Pack**.
-2. Clone or download this repository and open `whook_plugin.sln` in Visual Studio.
+## Build
+
+1. Clone or download this repository.
+2. Open `whook_plugin.sln` in Visual Studio.
 3. Restore the NuGet packages if Visual Studio does not do so automatically.
 4. Select the **Release** configuration and build the solution.
-5. Locate `mb_webhook.dll` in `bin\Release\`.
-6. Copy `mb_webhook.dll` to the `Plugins` folder inside your MusicBee installation. For a portable MusicBee install, use that installation's `Plugins` folder.
-7. Restart MusicBee.
+5. Find `mb_webhook.dll` in `bin\Release\`.
 
-If the build automatically copies the DLL to a MusicBee Plugins folder configured on the build machine, step 6 may already be done. Otherwise, manually copy the Release DLL as described above.
+## Install
 
-## Configure webhook URLs
+1. Copy `mb_webhook.dll` to the `Plugins` folder inside your MusicBee installation. For a portable installation, use its own `Plugins` folder.
+2. Restart MusicBee.
+3. Open **Edit → Preferences → Plugins**, select **Webhook Plugin**, and open its configuration dialog.
+4. Enter the incoming webhook URL for each service you want to use, then select **Save**.
+5. Change or play a track to send a notification.
 
-1. In MusicBee, open **Edit → Preferences → Plugins**.
-2. Select **Webhook Plugin** and open its configuration dialog.
-3. Enter your Discord and/or Slack incoming webhook URL, then save.
-4. Play or change a track to send a now-playing notification.
+The project does not currently provide an installer or a prebuilt release download. If the build is configured to copy the DLL to a MusicBee Plugins folder on your machine, the manual copy step may already be complete.
 
-The plugin saves these URLs in `webhooks.json` under MusicBee's persistent storage directory. Keep webhook URLs private; anyone who obtains one may be able to post to that destination.
+## Webhook settings and data
 
-## Showcase
+The settings dialog has fields for **Discord URL**, **Slack URL**, and **Custom URL**. The plugin saves these values to `webhook\webhooks.json` under MusicBee's persistent storage directory. Enter valid URLs for the services you want to use. The plugin attempts all three destinations on each track change, so blank or invalid URLs for unused services may produce request errors in the log.
 
-Add screenshots at the paths below when available:
+The plugin writes diagnostics to `webhook\webhook_plugin_log.log` in the same directory. If a notification is not received, check the URL and the log for request errors.
 
-![Discord notification showcase](docs/images/discord-showcase.png)
+Webhook URLs are credentials: anyone who obtains one may be able to post to that destination. Keep them private and do not commit them to source control.
 
-![Slack notification showcase](docs/images/slack-showcase.png)
+## Custom webhook payload
 
-## Build requirements
+The custom endpoint receives an HTTP `POST` with the `application/json` content type when a track changes. The payload has this shape:
 
-- Windows
-- Visual Studio with .NET desktop development tools
-- .NET Framework 4.8 Developer Pack
-- NuGet package restore
+```json
+{
+  "schemaVersion": 1,
+  "event": "track_changed",
+  "timestamp": "2026-01-01T12:00:00.0000000+00:00",
+  "player": {
+    "name": "MusicBee",
+    "status": null
+  },
+  "track": {
+    "title": "Track title",
+    "artist": "Artist name",
+    "album": "Album name",
+    "year": 2026,
+    "genre": "Genre",
+    "albumArtist": "Album artist",
+    "durationMs": 210000
+  },
+  "audio": {
+    "bitrateKbps": "320",
+    "sampleRateHz": "44100",
+    "bitdepth": 0,
+    "channels": 0,
+    "codec": "MP3"
+  },
+  "art": {
+    "url": "https://example.com/artwork.jpg"
+  }
+}
+```
+
+Values depend on the metadata available for the current track. Artwork may be unavailable. The custom endpoint must be reachable from the computer running MusicBee and accept JSON `POST` requests.
 
 ## License
 
