@@ -43,7 +43,7 @@ namespace MusicBeePlugin
 
             System.Windows.Forms.Label genericprompt = new System.Windows.Forms.Label();
             genericprompt.AutoSize = true;
-            genericprompt.Location = new Point(15, 90);
+            genericprompt.Location = new Point(25, 100);
             genericprompt.Text = "Custom URL";
 
             genericUrlBox = new TextBox();
