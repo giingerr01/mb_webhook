@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Dynamic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace MusicBeePlugin
 {
@@ -15,6 +16,13 @@ namespace MusicBeePlugin
 
         public class TestPay
         {
+            public string Greet { get; set; }
+            public long Position { get; set; }
+
+            public string AlbumArtist { get; set; }
+            public string Genre { get; set; }
+            public int Year { get; set; }
+            public long Duration { get; set; }
             public string Artist { get; set; }
             public string Title { get; set; }
             public string Album { get; set; }
@@ -24,8 +32,14 @@ namespace MusicBeePlugin
 
         public static async Task SendAsync(
             string LocalWebhookUrl,
+            string greet,
+            long positionMs,
+            long durationMs,
             string artist,
             string title,
+            string albumArtist,
+            int year,
+            string genre,
             string bitrate,
             string album,
             string art
@@ -34,7 +48,20 @@ namespace MusicBeePlugin
         {
             try
             {
-                TestPay testPay = new TestPay { Art = art, Bitrate = bitrate, Title = title, Album = album, Artist = artist };
+                TestPay testPay = new TestPay
+                {
+                    Greet = greet,
+                    Position = positionMs,
+                    Duration = durationMs,
+                    Title = title,
+                    Album = album,
+                    Artist = artist,
+                    AlbumArtist = albumArtist,
+                    Year = year,
+                    Genre = genre,
+                    Bitrate = bitrate,
+                    Art = art
+                };
 
                 string jsonString = JsonConvert.SerializeObject(testPay, Newtonsoft.Json.Formatting.Indented);
 
@@ -47,7 +74,7 @@ namespace MusicBeePlugin
                         string body = await response.Content.ReadAsStringAsync();
                         if (!response.IsSuccessStatusCode)
                         {
-                            Logger.Log("Local HTTP error: " + (int)response.StatusCode + ": " + body);
+                            Logger.Log("Local HTTP error: " + (int) response.StatusCode + ": " + body);
                             return;
                         }
                         Logger.Log("Local message send successfully.");

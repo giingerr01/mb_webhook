@@ -23,10 +23,16 @@ namespace MusicBeePlugin
                     break;
 
                 case NotificationType.TrackChanged:
+                    string greet = "Now Playing";
+                    long positionMs = mbApiInterface.Player_GetPosition();
+                    long durationMs = mbApiInterface.NowPlaying_GetDuration();
+                    string albumArtist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.AlbumArtist);
+                    int year = int.TryParse(mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Year), out var br) ? br : 0;
                     string artist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
                     string title = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
                     string album = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
                     string bitrate = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
+                    string genre = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Genre);
 
                     string art = null;
                     try
@@ -43,8 +49,14 @@ namespace MusicBeePlugin
                         "Local",
                         () => TestPayload.SendAsync(
                             LocalWebhookUrl,
+                            greet,
+                            positionMs,
+                            durationMs,
                             artist,
                             title,
+                            albumArtist,
+                            year,
+                            genre,
                             bitrate,
                             album,
                             art));
