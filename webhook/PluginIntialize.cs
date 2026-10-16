@@ -47,6 +47,7 @@ namespace MusicBeePlugin
             // Assign individual variables or access directly from the dictionary as needed
             DiscordWebhookUrl = WebhookUrls.ContainsKey("discord") ? WebhookUrls["discord"] : string.Empty;
             SlackWebhookUrl = WebhookUrls.ContainsKey("slack") ? WebhookUrls["slack"] : string.Empty;
+            GenericWebhookUrl = WebhookUrls.ContainsKey("Generic") ? WebhookUrls["Generic"] : string.Empty;
 
             // Logger for musicbee logtrace
             Logger.FilePath = Path.Combine(webhookFolder, "webhook_plugin_log.log");
@@ -77,6 +78,7 @@ namespace MusicBeePlugin
         {
             WebhookUrls["discord"] = DiscordWebhookUrl;
             WebhookUrls["slack"] = SlackWebhookUrl;
+            WebhookUrls["Generic"] = GenericWebhookUrl;
 
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string webhookFolder = Path.Combine(dataPath, "webhook");
