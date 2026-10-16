@@ -51,7 +51,7 @@ namespace MusicBeePlugin
                     Task GenericTask = SafeSendAsync(
                         "Local",
                         () => GenericWebhook.SendAsync(
-                            LocalWebhookUrl,
+                            GenericWebhookUrl,
                             greet,
                             positionMs,
                             durationMs,
