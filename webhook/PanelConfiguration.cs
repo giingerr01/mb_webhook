@@ -16,7 +16,7 @@ namespace MusicBeePlugin
                 {
                     DiscordWebhookUrl = configForm.urlBox.Text.Trim();
                     SlackWebhookUrl = configForm.slackUrlBox.Text.Trim();
-                    GenericWebhookUrl = configForm.urlBox.Text.Trim();
+                    GenericWebhookUrl = configForm.genericUrlBox.Text.Trim();
 
                     SaveSettings();
                 }
