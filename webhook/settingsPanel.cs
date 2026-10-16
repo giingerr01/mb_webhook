@@ -18,7 +18,7 @@ namespace MusicBeePlugin
         {
             this.Text = "webhook settings";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.Height = 320;
+            this.Height = 200;
             this.Width = 320;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -29,31 +29,31 @@ namespace MusicBeePlugin
             prompt.Text = "Discord URL";
 
             urlBox = new TextBox();
-            urlBox.Bounds = new Rectangle(95, 18, 190, 10);
+            urlBox.Bounds = new Rectangle(95, 15, 190, 10);
             urlBox.Text = DiscordWebhookUrl;
 
             System.Windows.Forms.Label slackprompt = new System.Windows.Forms.Label();
             slackprompt.AutoSize = true;
-            slackprompt.Location = new Point(15, 55);
+            slackprompt.Location = new Point(15, 60);
             slackprompt.Text = "Slack URL";
 
             slackUrlBox = new TextBox();
-            slackUrlBox.Bounds = new Rectangle(95, 53, 190, 10);
+            slackUrlBox.Bounds = new Rectangle(95, 55, 190, 10);
             slackUrlBox.Text = SlackWebhookUrl;
 
             System.Windows.Forms.Label genericprompt = new System.Windows.Forms.Label();
             genericprompt.AutoSize = true;
-            genericprompt.Location = new Point(25, 100);
+            genericprompt.Location = new Point(15, 100);
             genericprompt.Text = "Custom URL";
 
             genericUrlBox = new TextBox();
-            genericprompt.Bounds = new Rectangle(95, 70, 190, 10);
-            genericprompt.Text = GenericWebhookUrl;
+            genericUrlBox.Bounds = new Rectangle(95, 95, 190, 10);
+            genericUrlBox.Text = GenericWebhookUrl;
 
             Button saveButton = new Button();
             saveButton.Text = "Save";
             saveButton.DialogResult = DialogResult.OK;
-            saveButton.Location = new Point(405, 90);
+            saveButton.Location = new Point(205, 120);
             saveButton.Width = 80;
 
 
