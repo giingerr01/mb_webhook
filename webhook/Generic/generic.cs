@@ -12,25 +12,12 @@ namespace MusicBeePlugin
 {
     public static class TestPayload
     {
-        private static readonly HttpClient httpClient = new HttpClient();
-
-        public class TestPay
+        private static readonly HttpClient httpClient = new HttpClient()
         {
-            public string Greet { get; set; }
-            public long Position { get; set; }
+            Timeout = TimeSpan.FromSeconds(5)
+        };
 
-            public string AlbumArtist { get; set; }
-            public string Genre { get; set; }
-            public int Year { get; set; }
-            public long Duration { get; set; }
-            public string Artist { get; set; }
-            public string Title { get; set; }
-            public string Album { get; set; }
-            public string Bitrate { get; set; }
-            public string Art { get; set; }
-            public string Format { get; set; }
-            public string SampleRateHz { get; set; }
-        }
+
 
         public static async Task SendAsync(
             string LocalWebhookUrl,
@@ -50,22 +37,12 @@ namespace MusicBeePlugin
         {
             try
             {
-                TestPay testPay = new TestPay
+                DiscordPayload discordPayload = new DiscordPayload
                 {
-                    Greet = greet,
-                    Position = positionMs,
-                    Duration = durationMs,
-                    Title = title,
-                    Album = album,
-                    Artist = artist,
-                    AlbumArtist = albumArtist,
-                    Year = year,
-                    Genre = genre,
-                    Bitrate = bitrate,
-                    Art = art
+
                 };
 
-                string jsonString = JsonConvert.SerializeObject(testPay, Newtonsoft.Json.Formatting.Indented);
+                string jsonString = JsonConvert.SerializeObject(discordPayload, Newtonsoft.Json.Formatting.Indented);
 
                 using (var requestContent = new StringContent(
                     jsonString, Encoding.UTF8, "application/json"
