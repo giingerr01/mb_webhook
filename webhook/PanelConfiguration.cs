@@ -10,12 +10,13 @@ namespace MusicBeePlugin
     {
         public bool Configure(IntPtr panelHandle)
         {
-            using (SettingsForm configForm = new SettingsForm(DiscordWebhookUrl, SlackWebhookUrl))
+            using (SettingsForm configForm = new SettingsForm(DiscordWebhookUrl, SlackWebhookUrl, GenericWebhookUrl))
             {
                 if (configForm.ShowDialog() == DialogResult.OK)
                 {
                     DiscordWebhookUrl = configForm.urlBox.Text.Trim();
                     SlackWebhookUrl = configForm.slackUrlBox.Text.Trim();
+                    GenericWebhookUrl = configForm.urlBox.Text.Trim();
 
                     SaveSettings();
                 }
