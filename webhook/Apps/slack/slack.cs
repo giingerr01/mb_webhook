@@ -74,11 +74,11 @@ namespace MusicBeePlugin
                                     type = "section",
                                     fields = new List<SlackText>
                                     {
-                                        new SlackText
-                                        {
-                                            type = "mrkdwn",
-                                            text = $"*Album*\n{album}"
-                                        },
+                                        // new SlackText
+                                        // {
+                                        //     type = "mrkdwn",
+                                        //     text = $"*Album*\n{album}"
+                                        // },
                                         new SlackText
                                         {
                                             type = "mrkdwn",
@@ -118,7 +118,7 @@ namespace MusicBeePlugin
                     var body = await response.Content.ReadAsStringAsync();
                     if (!response.IsSuccessStatusCode)
                     {
-                        Logger.Log("Slack HTTP Error: " + (int)response.StatusCode + ": " + body);
+                        Logger.Log("Slack HTTP Error: " + (int) response.StatusCode + ": " + body);
                         return;
                     }
 
