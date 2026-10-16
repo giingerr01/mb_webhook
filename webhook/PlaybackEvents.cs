@@ -24,7 +24,6 @@ namespace MusicBeePlugin
                     break;
 
                 case NotificationType.TrackChanged:
-                    string greet = "Now Playing";
                     long positionMs = mbApiInterface.Player_GetPosition();
                     long durationMs = mbApiInterface.NowPlaying_GetDuration();
                     string album = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
@@ -52,7 +51,6 @@ namespace MusicBeePlugin
                         "Local",
                         () => GenericWebhook.SendAsync(
                             GenericWebhookUrl,
-                            greet,
                             positionMs,
                             durationMs,
                             artist,
