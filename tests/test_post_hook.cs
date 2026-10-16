@@ -28,6 +28,8 @@ namespace MusicBeePlugin
             public string Album { get; set; }
             public string Bitrate { get; set; }
             public string Art { get; set; }
+            public string Format { get; set; }
+            public string SampleRateHz { get; set; }
         }
 
         public static async Task SendAsync(
