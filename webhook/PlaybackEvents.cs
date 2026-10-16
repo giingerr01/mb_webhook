@@ -15,6 +15,7 @@ namespace MusicBeePlugin
                     switch (mbApiInterface.Player_GetPlayState())
                     {
                         case PlayState.Playing:
+
                             break;
 
                         case PlayState.Paused:
@@ -26,13 +27,15 @@ namespace MusicBeePlugin
                     string greet = "Now Playing";
                     long positionMs = mbApiInterface.Player_GetPosition();
                     long durationMs = mbApiInterface.NowPlaying_GetDuration();
-                    string albumArtist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.AlbumArtist);
-                    int year = int.TryParse(mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Year), out var br) ? br : 0;
+                    string album = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
+                    string genre = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Genre);
                     string artist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
                     string title = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
-                    string album = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
+                    string format = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Kind);
+                    string albumArtist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.AlbumArtist);
                     string bitrate = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
-                    string genre = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Genre);
+                    string sampleRateHz = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.SampleRate);
+                    int year = int.TryParse(mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Year), out var br) ? br : 0;
 
                     string art = null;
                     try
@@ -45,9 +48,9 @@ namespace MusicBeePlugin
                         Logger.Log("Artwork Lookup failed: " + ex);
                     }
 
-                    Task localTask = SafeSendAsync(
+                    Task GenericTask = SafeSendAsync(
                         "Local",
-                        () => TestPayload.SendAsync(
+                        () => GenericWebhook.SendAsync(
                             LocalWebhookUrl,
                             greet,
                             positionMs,
@@ -58,6 +61,8 @@ namespace MusicBeePlugin
                             year,
                             genre,
                             bitrate,
+                            format,
+                            sampleRateHz,
                             album,
                             art));
 
@@ -78,7 +83,7 @@ namespace MusicBeePlugin
                             bitrate,
                             art));
 
-                    await Task.WhenAll(localTask, discordTask, slackTask);
+                    await Task.WhenAll(GenericTask, discordTask, slackTask);
 
                     string id = await discordTask;
                     if (id != null)
