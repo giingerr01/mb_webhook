@@ -1,68 +1,147 @@
-# MusicBee Webhook Plugin
+# MB Webhook
 
-`mb_webhook` is a Windows plugin for [MusicBee](https://getmusicbee.com/) that sends a now-playing notification when the track changes. It can post formatted messages to Discord and Slack, and send a JSON payload to a custom webhook endpoint.
+A webhook plugin for [MusicBee](https://getmusicbee.com/) that sends **Now Playing** information whenever the current track changes.
 
-The project targets .NET Framework 4.8. Version `2.1.0` is available as a prebuilt release. Most MusicBee users can install it by downloading the latest release and copying the plugin DLL into MusicBee's `Plugins` folder; building from source is optional.
+MB Webhook supports:
 
-## Features
+- **Discord** — rich embed notifications
+- **Slack** — Block Kit notifications
+- **Generic HTTP Webhooks** — structured JSON sent to any compatible HTTP endpoint
 
-- Sends track title, artist, album, bitrate, and available album artwork to Discord and Slack.
-- Sends track metadata as JSON to a configurable custom webhook.
-- Looks up artwork through the iTunes Search API.
-- Provides a MusicBee settings dialog for the three webhook URLs.
-- Saves settings and plugin logs under MusicBee's persistent storage directory.
+The plugin targets **.NET Framework 4.8** and runs on Windows with MusicBee.
 
-Notifications are sent on track changes. This plugin sends outbound HTTP requests; it does not host a webhook server.
+## Showcase
 
-## Screenshots
+<!-- Replace these placeholders with your actual screenshots -->
 
-Screenshots can be added to the `assets` folder and linked here. These image links are placeholders until the PNG files are added:
+### Settings
 
-<!--
-![Plugin settings](assets/plugin-settings.png)
-![Discord notification example](assets/discord-notification.png)
-![Slack notification example](assets/slack-notification.png)
--->
+![MB Webhook Settings](assets/panel.png)
 
-## Download
+### Discord
 
-Download the latest prebuilt package from the [GitHub Releases page](https://github.com/giingerr01/mb_webhook/releases/latest) (version `2.1.0` or newer), then extract the downloaded archive.
+![Discord Webhook Example](assets/discord.png)
 
-## Install in MusicBee
+### Slack
 
-1. Close MusicBee.
-2. In the extracted release files, locate `mb_webhook.dll`.
-3. Copy `mb_webhook.dll` into the `Plugins` folder inside your MusicBee installation. For example, a standard installation may use `C:\Program Files (x86)\MusicBee\Plugins`. If you use a portable installation, use the `Plugins` folder next to its `MusicBee.exe`. Create the `Plugins` folder if it does not already exist.
-4. Reopen MusicBee. Go to **Edit → Preferences → Plugins**, select **Webhook Plugin**, and open its configuration dialog.
-5. Enter the webhook URL for each service you want to use, then select **Save**.
-6. Change or play a track to test the notification.
+![Slack Webhook Example](assets/slack.png)
 
-## Build from source (optional)
+### Generic Webhook
+`An example for how you use your own custom end points to do automation`
+`you can also make your homelight to react on certain artist annd songs like in this example the the home room light says RED wen track is from Travis
+Scott and PURPLE when Lana Del Rey`
 
-To compile the plugin yourself, you will need Windows, Visual Studio with the **.NET desktop development** workload, the **.NET Framework 4.8 Developer Pack**, and NuGet package restore.
+![Generic Webhook Example](assets/node-red.png)
 
-1. Clone or download this repository.
-2. Open `whook_plugin.sln` in Visual Studio and restore the NuGet packages if needed.
-3. Select the **Release** configuration and build the solution.
-4. Find `mb_webhook.dll` in `bin\Release\` and install it using the steps above.
+---
 
-## Webhook settings and data
+## Installation
 
-The settings dialog has fields for **Discord URL**, **Slack URL**, and **Custom URL**. The plugin saves these values to `webhook\webhooks.json` under MusicBee's persistent storage directory. Enter valid URLs for the services you want to use. The plugin attempts all three destinations on each track change, so blank or invalid URLs for unused services may produce request errors in the log.
+1. Download the latest release from the [GitHub Releases page](https://github.com/giingerr01/mb_webhook/releases/latest).
+2. Extract the downloaded archive.
+3. Close MusicBee if it is currently running.
+4. Copy `mb_webhook.dll` into MusicBee's `Plugins` folder.
 
-The plugin writes diagnostics to `webhook\webhook_plugin_log.log` in the same directory. If a notification is not received, check the URL and the log for request errors.
+For a standard MusicBee installation, this is commonly:
 
-Webhook URLs are credentials: anyone who obtains one may be able to post to that destination. Keep them private and do not commit them to source control.
+```text
+C:\Program Files (x86)\MusicBee\Plugins\
+```
 
-## Custom webhook payload
+For a portable installation, use the `Plugins` folder next to `MusicBee.exe`.
 
-The custom endpoint receives an HTTP `POST` with the `application/json` content type when a track changes. The payload has this shape:
+5. Start MusicBee.
+6. Open **Edit → Preferences → Plugins**.
+7. Find **Webhook Plugin** and select **Configure**.
+8. Add the webhook URLs you want to use and select **Save**.
+
+You only need to configure the services you intend to use.
+
+---
+
+## Discord Setup
+
+MB Webhook uses a Discord **Incoming Webhook**.
+
+To create one:
+
+1. Open the Discord server and choose the channel where Now Playing notifications should appear.
+2. Open **Edit Channel → Integrations → Webhooks**.
+3. Select **New Webhook**.
+4. Choose the destination channel and optionally give the webhook a name.
+5. Select **Copy Webhook URL**.
+6. Paste the URL into the **Discord URL** field in MB Webhook's settings.
+7. Select **Save**.
+
+When the track changes, MB Webhook will send a rich Discord embed containing available track information and artwork.
+
+> [!WARNING]
+> Treat webhook URLs like credentials. Anyone with access to the URL may be able to post messages through that webhook. Do not publish or commit webhook URLs.
+
+---
+
+## Slack Setup
+
+MB Webhook uses a Slack **Incoming Webhook**.
+
+To create one:
+
+1. Go to the Slack API website and create or select a Slack app.
+2. Open **Incoming Webhooks** for the app.
+3. Enable **Activate Incoming Webhooks**.
+4. Select **Add New Webhook to Workspace**.
+5. Choose the channel where MusicBee notifications should appear.
+6. Authorize the app.
+7. Copy the generated **Webhook URL**.
+8. Paste it into the **Slack URL** field in MB Webhook's settings.
+9. Select **Save**.
+
+MB Webhook sends track information using Slack Block Kit formatting with available album artwork.
+
+> [!WARNING]
+> Keep the Slack webhook URL private. It grants permission to post through that webhook.
+
+---
+
+## Generic HTTP Webhook
+
+The **Custom URL** option can send MusicBee track-change events to any endpoint that accepts an HTTP `POST` containing JSON.
+
+This makes MB Webhook usable with tools and services such as:
+
+- Node-RED
+- n8n
+- Home Assistant
+- Custom servers and APIs
+- Personal dashboards
+- Automation workflows
+
+Enter your endpoint in the **Custom URL** field and select **Save**.
+
+For example:
+
+```text
+http://localhost:1880/musicbee
+```
+
+The receiving endpoint must be reachable from the computer running MusicBee and accept:
+
+```http
+POST
+Content-Type: application/json
+```
+
+### Payload
+
+Generic webhooks use schema version `1`.
+
+Example:
 
 ```json
 {
   "schemaVersion": 1,
   "event": "track_changed",
-  "timestamp": "2026-01-01T12:00:00.0000000+00:00",
+  "timestamp": "2026-01-01T12:00:00+00:00",
   "player": {
     "name": "MusicBee",
     "status": null
@@ -89,8 +168,72 @@ The custom endpoint receives an HTTP `POST` with the `application/json` content 
 }
 ```
 
-Values depend on the metadata available for the current track. Artwork may be unavailable. The custom endpoint must be reachable from the computer running MusicBee and accept JSON `POST` requests.
+Values depend on the metadata available for the current track. Some properties, including artwork, may be unavailable.
+
+---
+
+## Track Information
+
+Depending on the destination and available MusicBee metadata, MB Webhook can send information including:
+
+- Track title
+- Artist
+- Album
+- Album artist
+- Genre and year
+- Duration
+- Bitrate and audio information
+- Album artwork
+
+Artwork is looked up using the iTunes Search API when available.
+
+Notifications are sent when the current track changes. MB Webhook only sends outbound HTTP requests — it does **not** host a webhook server.
+
+---
+
+## Troubleshooting
+
+If a webhook is not working:
+
+1. Check that the webhook URL was copied correctly.
+2. Make sure the destination webhook is still active.
+3. Save the settings again and change the currently playing track.
+4. Check `webhook_plugin_log.log` for HTTP or network errors.
+
+For Generic webhooks, make sure the endpoint is reachable from the MusicBee computer and accepts JSON `POST` requests.
+
+---
+
+## Building from Source
+
+Building the plugin yourself is optional. Most users should install the prebuilt release.
+
+Requirements:
+
+- Windows
+- Visual Studio
+- **.NET desktop development** workload
+- **.NET Framework 4.8 Developer Pack**
+- NuGet package restore
+
+Clone the repository and open:
+
+```text
+whook_plugin.sln
+```
+
+Build the solution using the **Release** configuration.
+
+The compiled plugin can then be found under:
+
+```text
+bin\Release\
+```
+
+Copy `mb_webhook.dll` into MusicBee's `Plugins` folder.
+
+---
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+MB Webhook is licensed under the [MIT License](LICENSE).
