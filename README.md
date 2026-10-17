@@ -14,6 +14,16 @@ The project targets .NET Framework 4.8. Version `2.1.0` is available as a prebui
 
 Notifications are sent on track changes. This plugin sends outbound HTTP requests; it does not host a webhook server.
 
+## Screenshots
+
+Screenshots can be added to the `assets` folder and linked here. These image links are placeholders until the PNG files are added:
+
+<!--
+![Plugin settings](assets/plugin-settings.png)
+![Discord notification example](assets/discord-notification.png)
+![Slack notification example](assets/slack-notification.png)
+-->
+
 ## Download
 
 Download the latest prebuilt package from the [GitHub Releases page](https://github.com/giingerr01/mb_webhook/releases/latest) (version `2.1.0` or newer), then extract the downloaded archive.
