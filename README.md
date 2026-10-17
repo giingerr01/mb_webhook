@@ -27,8 +27,7 @@ The plugin targets **.NET Framework 4.8** and runs on Windows with MusicBee.
 ![Slack Webhook Example](assets/slack.png)
 
 ### Generic Webhook
-Use your own custom endpoints to trigger automation, dashboards, or smart-home actions whenever a track changes.
-For example, a smart-home light can turn red when a Travis Scott track is playing and purple when Lana Del Rey is playing.
+The example shown here is a mock: it displays red or purple text in the debug panel based on the artist. It does not control physical lights(just and demonstration). To make lights change color, connect the webhook to a service or custom endpoint that handles the automation and communicates with your smart-home devices.
 
 ![Generic Webhook Example](assets/node-red.png)
 
