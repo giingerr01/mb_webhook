@@ -21,7 +21,7 @@ namespace MusicBeePlugin
                     SaveSettings();
                 }
             }
-            return false;
+            return true;
         }
     }
 }
