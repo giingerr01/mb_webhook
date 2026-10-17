@@ -2,7 +2,7 @@
 
 `mb_webhook` is a Windows plugin for [MusicBee](https://getmusicbee.com/) that sends a now-playing notification when the track changes. It can post formatted messages to Discord and Slack, and send a JSON payload to a custom webhook endpoint.
 
-The project targets .NET Framework 4.8. Version metadata is currently `1.0.0`; a prebuilt download has not yet been published, so build the plugin from source using the instructions below.
+The project targets .NET Framework 4.8. Version `2.1.0` is available as a prebuilt release. Most MusicBee users can install it by downloading the latest release and copying the plugin DLL into MusicBee's `Plugins` folder; building from source is optional.
 
 ## Features
 
@@ -14,30 +14,27 @@ The project targets .NET Framework 4.8. Version metadata is currently `1.0.0`; a
 
 Notifications are sent on track changes. This plugin sends outbound HTTP requests; it does not host a webhook server.
 
-## Requirements
+## Download
 
-- Windows and MusicBee
-- Visual Studio with the **.NET desktop development** workload
-- The **.NET Framework 4.8 Developer Pack**
-- NuGet package restore
+Download the latest prebuilt package from the [GitHub Releases page](https://github.com/giingerr01/mb_webhook/releases/latest) (version `2.1.0` or newer), then extract the downloaded archive.
 
-## Build
+## Install in MusicBee
+
+1. Close MusicBee.
+2. In the extracted release files, locate `mb_webhook.dll`.
+3. Copy `mb_webhook.dll` into the `Plugins` folder inside your MusicBee installation. For example, a standard installation may use `C:\Program Files (x86)\MusicBee\Plugins`. If you use a portable installation, use the `Plugins` folder next to its `MusicBee.exe`. Create the `Plugins` folder if it does not already exist.
+4. Reopen MusicBee. Go to **Edit → Preferences → Plugins**, select **Webhook Plugin**, and open its configuration dialog.
+5. Enter the webhook URL for each service you want to use, then select **Save**.
+6. Change or play a track to test the notification.
+
+## Build from source (optional)
+
+To compile the plugin yourself, you will need Windows, Visual Studio with the **.NET desktop development** workload, the **.NET Framework 4.8 Developer Pack**, and NuGet package restore.
 
 1. Clone or download this repository.
-2. Open `whook_plugin.sln` in Visual Studio.
-3. Restore the NuGet packages if Visual Studio does not do so automatically.
-4. Select the **Release** configuration and build the solution.
-5. Find `mb_webhook.dll` in `bin\Release\`.
-
-## Install
-
-1. Copy `mb_webhook.dll` to the `Plugins` folder inside your MusicBee installation. For a portable installation, use its own `Plugins` folder.
-2. Restart MusicBee.
-3. Open **Edit → Preferences → Plugins**, select **Webhook Plugin**, and open its configuration dialog.
-4. Enter the incoming webhook URL for each service you want to use, then select **Save**.
-5. Change or play a track to send a notification.
-
-The project does not currently provide an installer or a prebuilt release download. If the build is configured to copy the DLL to a MusicBee Plugins folder on your machine, the manual copy step may already be complete.
+2. Open `whook_plugin.sln` in Visual Studio and restore the NuGet packages if needed.
+3. Select the **Release** configuration and build the solution.
+4. Find `mb_webhook.dll` in `bin\Release\` and install it using the steps above.
 
 ## Webhook settings and data
 
