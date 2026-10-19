@@ -34,12 +34,14 @@ namespace MusicBeePlugin
             // 
             // discordUrlTextBox
             // 
+            this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.Menu;
             this.discordUrlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.discordUrlTextBox.ForeColor = System.Drawing.Color.Black;
-            this.discordUrlTextBox.Location = new System.Drawing.Point(119, 12);
+            this.discordUrlTextBox.Location = new System.Drawing.Point(119, 56);
             this.discordUrlTextBox.Name = "discordUrlTextBox";
             this.discordUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.discordUrlTextBox.TabIndex = 0;
+            this.discordUrlTextBox.TextChanged += new System.EventHandler(this.discordUrlTextBox_TextChanged);
             // 
             // contextMenuStrip1
             // 
@@ -48,14 +50,16 @@ namespace MusicBeePlugin
             // 
             // slackUrlTextBox
             // 
-            this.slackUrlTextBox.Location = new System.Drawing.Point(119, 64);
+            this.slackUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.slackUrlTextBox.Location = new System.Drawing.Point(119, 110);
             this.slackUrlTextBox.Name = "slackUrlTextBox";
             this.slackUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.slackUrlTextBox.TabIndex = 2;
             // 
             // genericUrlTextBox
             // 
-            this.genericUrlTextBox.Location = new System.Drawing.Point(119, 108);
+            this.genericUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.genericUrlTextBox.Location = new System.Drawing.Point(119, 168);
             this.genericUrlTextBox.Name = "genericUrlTextBox";
             this.genericUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.genericUrlTextBox.TabIndex = 3;
@@ -65,8 +69,8 @@ namespace MusicBeePlugin
             this.Save.BackColor = System.Drawing.SystemColors.Menu;
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Save.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Save.Location = new System.Drawing.Point(355, 143);
-            this.Save.Name = "SaveButton";
+            this.Save.Location = new System.Drawing.Point(355, 194);
+            this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(71, 23);
             this.Save.TabIndex = 5;
             this.Save.Text = "Save";
@@ -75,7 +79,7 @@ namespace MusicBeePlugin
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.ClientSize = new System.Drawing.Size(433, 197);
+            this.ClientSize = new System.Drawing.Size(436, 229);
             this.Controls.Add(this.Save);
             this.Controls.Add(this.genericUrlTextBox);
             this.Controls.Add(this.slackUrlTextBox);
