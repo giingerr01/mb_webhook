@@ -66,7 +66,7 @@ namespace MusicBeePlugin
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Save.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Save.Location = new System.Drawing.Point(355, 143);
-            this.Save.Name = "Save";
+            this.Save.Name = "SaveButton";
             this.Save.Size = new System.Drawing.Size(71, 23);
             this.Save.TabIndex = 5;
             this.Save.Text = "Save";
