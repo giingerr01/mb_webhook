@@ -31,7 +31,7 @@ namespace MusicBeePlugin
             string bitrate,
             string format,
             string sampleRateHz,
-            string bitDepth,
+            int bitDepth,
             string album,
             string art
         )
