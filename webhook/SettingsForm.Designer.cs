@@ -31,6 +31,7 @@ namespace MusicBeePlugin
             this.slackUrlLabel = new System.Windows.Forms.Label();
             this.genericUrlLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
+            this.forumLinkLabel = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // discordUrlTextBox
@@ -110,10 +111,22 @@ namespace MusicBeePlugin
             this.versionLabel.TabIndex = 12;
             this.versionLabel.Text = "v.2.1.0";
             // 
+            // forumLinkLabel
+            // 
+            this.forumLinkLabel.AutoSize = true;
+            this.forumLinkLabel.Location = new System.Drawing.Point(16, 177);
+            this.forumLinkLabel.Name = "forumLinkLabel";
+            this.forumLinkLabel.Size = new System.Drawing.Size(42, 13);
+            this.forumLinkLabel.TabIndex = 13;
+            this.forumLinkLabel.TabStop = true;
+            this.forumLinkLabel.Text = "Forum?";
+            this.forumLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.forumLinkLabel_LinkClicked);
+            // 
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(419, 196);
+            this.Controls.Add(this.forumLinkLabel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.genericUrlLabel);
             this.Controls.Add(this.slackUrlLabel);
@@ -141,5 +154,6 @@ namespace MusicBeePlugin
         private Label slackUrlLabel;
         private Label genericUrlLabel;
         private Label versionLabel;
+        private LinkLabel forumLinkLabel;
     }
 }
