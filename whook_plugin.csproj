@@ -96,16 +96,18 @@
     <Compile Include="Logger.cs" />
     <Compile Include="MusicBeeInterface.cs" />
     <Compile Include="webhook\WebhookPlugin.cs" />
-    <Compile Include="webhook\settingsPanel.cs" />
+    <Compile Include="webhook\settingsPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="webhook\WebhookClient.cs" />
     <Compile Include="webhook\PlaybackEvents.cs" />
     <Compile Include="webhook\PluginIntialize.cs" />
-    <Compile Include="webhook\Apps\slack\slack.cs"/>
+    <Compile Include="webhook\Apps\slack\slack.cs" />
     <Compile Include="webhook\PanelConfiguration.cs" />
     <Compile Include="webhook\Generic\generic.cs" />
     <Compile Include="webhook\Generic\\GenericModels\GenericModels.cs" />
-    <Compile Include="webhook\Apps\slack\SlackModels\SlackModels.cs"/>
-    <Compile Include="webhook\Apps\discord\DiscordModels\DiscordModels.cs" >
+    <Compile Include="webhook\Apps\slack\SlackModels\SlackModels.cs" />
+    <Compile Include="webhook\Apps\discord\DiscordModels\DiscordModels.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,6 +139,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="webhook\settingsPanel.resx">
+      <DependentUpon>settingsPanel.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="MusicBee.local.targets" Condition="Exists('MusicBee.local.targets')" />
