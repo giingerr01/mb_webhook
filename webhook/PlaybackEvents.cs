@@ -26,15 +26,41 @@ namespace MusicBeePlugin
                 case NotificationType.TrackChanged:
                     long positionMs = mbApiInterface.Player_GetPosition();
                     long durationMs = mbApiInterface.NowPlaying_GetDuration();
-                    string album = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Album);
-                    string genre = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Genre);
-                    string artist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Artist);
-                    string title = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.TrackTitle);
-                    string format = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Kind);
-                    string albumArtist = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.AlbumArtist);
-                    string bitrate = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.Bitrate);
-                    string sampleRateHz = mbApiInterface.NowPlaying_GetFileProperty(FilePropertyType.SampleRate);
-                    int year = int.TryParse(mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Year), out var br) ? br : 0;
+
+                    string album = mbApiInterface.NowPlaying_GetFileTag(
+                        MetaDataType.Album
+                        );
+                    string genre = mbApiInterface.NowPlaying_GetFileTag(
+                        MetaDataType.Genre
+                        );
+                    string artist = mbApiInterface.NowPlaying_GetFileTag(
+                        MetaDataType.Artist
+                        );
+                    string title = mbApiInterface.NowPlaying_GetFileTag(
+                        MetaDataType.TrackTitle
+                        );
+                    string format = mbApiInterface.NowPlaying_GetFileProperty(
+                        FilePropertyType.Kind
+                        );
+                    string albumArtist = mbApiInterface.NowPlaying_GetFileTag(
+                        MetaDataType.AlbumArtist
+                        );
+                    string bitrate = mbApiInterface.NowPlaying_GetFileProperty(
+                        FilePropertyType.Bitrate
+                        );
+                    string sampleRateHz = mbApiInterface.NowPlaying_GetFileProperty(
+                        FilePropertyType.SampleRate
+                        );
+
+                    // fetching raw date first 
+                    string rawYear = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Year);
+
+                    // parse it into year 
+                    int year = 0;
+                    if (DateTime.TryParse(rawYear, out var parsedDate))
+                    {
+                        year = parsedDate.Year;
+                    }
 
                     string art = null;
                     try
