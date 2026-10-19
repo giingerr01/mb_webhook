@@ -94,11 +94,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logger.cs" />
-    <Compile Include="MusicBeeInterface.cs" />
-    <Compile Include="webhook\WebhookPlugin.cs" />
-    <Compile Include="webhook\settingsPanel.cs">
+    <Compile Include="MusicBeeInterface.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="webhook\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="webhook\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="webhook\WebhookPlugin.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
     <Compile Include="webhook\PlaybackEvents.cs" />
     <Compile Include="webhook\PluginIntialize.cs" />
@@ -141,8 +151,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="webhook\settingsPanel.resx">
-      <DependentUpon>settingsPanel.cs</DependentUpon>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="webhook\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
