@@ -43,5 +43,12 @@ namespace MusicBeePlugin
         {
 
         }
+
+        private void forumLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(
+                "https://getmusicbee.com/forum/index.php?topic=44914.0"
+                );
+        }
     }
 }
