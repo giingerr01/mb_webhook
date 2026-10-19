@@ -37,7 +37,7 @@ namespace MusicBeePlugin
             this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.Menu;
             this.discordUrlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.discordUrlTextBox.ForeColor = System.Drawing.Color.Black;
-            this.discordUrlTextBox.Location = new System.Drawing.Point(99, 36);
+            this.discordUrlTextBox.Location = new System.Drawing.Point(100, 36);
             this.discordUrlTextBox.Name = "discordUrlTextBox";
             this.discordUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.discordUrlTextBox.TabIndex = 0;
@@ -46,7 +46,7 @@ namespace MusicBeePlugin
             // slackUrlTextBox
             // 
             this.slackUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.slackUrlTextBox.Location = new System.Drawing.Point(99, 73);
+            this.slackUrlTextBox.Location = new System.Drawing.Point(100, 73);
             this.slackUrlTextBox.Name = "slackUrlTextBox";
             this.slackUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.slackUrlTextBox.TabIndex = 2;
@@ -54,7 +54,7 @@ namespace MusicBeePlugin
             // genericUrlTextBox
             // 
             this.genericUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.genericUrlTextBox.Location = new System.Drawing.Point(99, 118);
+            this.genericUrlTextBox.Location = new System.Drawing.Point(100, 118);
             this.genericUrlTextBox.Name = "genericUrlTextBox";
             this.genericUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.genericUrlTextBox.TabIndex = 3;
@@ -64,7 +64,7 @@ namespace MusicBeePlugin
             this.Save.BackColor = System.Drawing.SystemColors.Menu;
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Save.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Save.Location = new System.Drawing.Point(335, 159);
+            this.Save.Location = new System.Drawing.Point(336, 159);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(71, 23);
             this.Save.TabIndex = 5;
@@ -74,7 +74,7 @@ namespace MusicBeePlugin
             // discordUrlLabel
             // 
             this.discordUrlLabel.AutoSize = true;
-            this.discordUrlLabel.Location = new System.Drawing.Point(12, 38);
+            this.discordUrlLabel.Location = new System.Drawing.Point(13, 38);
             this.discordUrlLabel.Name = "discordUrlLabel";
             this.discordUrlLabel.Size = new System.Drawing.Size(68, 13);
             this.discordUrlLabel.TabIndex = 7;
@@ -83,7 +83,7 @@ namespace MusicBeePlugin
             // slackUrlLabel
             // 
             this.slackUrlLabel.AutoSize = true;
-            this.slackUrlLabel.Location = new System.Drawing.Point(13, 80);
+            this.slackUrlLabel.Location = new System.Drawing.Point(14, 80);
             this.slackUrlLabel.Name = "slackUrlLabel";
             this.slackUrlLabel.Size = new System.Drawing.Size(59, 13);
             this.slackUrlLabel.TabIndex = 8;
@@ -92,7 +92,7 @@ namespace MusicBeePlugin
             // genericUrlLabel
             // 
             this.genericUrlLabel.AutoSize = true;
-            this.genericUrlLabel.Location = new System.Drawing.Point(13, 121);
+            this.genericUrlLabel.Location = new System.Drawing.Point(14, 121);
             this.genericUrlLabel.Name = "genericUrlLabel";
             this.genericUrlLabel.Size = new System.Drawing.Size(67, 13);
             this.genericUrlLabel.TabIndex = 11;
@@ -102,7 +102,7 @@ namespace MusicBeePlugin
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.ClientSize = new System.Drawing.Size(422, 189);
+            this.ClientSize = new System.Drawing.Size(419, 196);
             this.Controls.Add(this.genericUrlLabel);
             this.Controls.Add(this.slackUrlLabel);
             this.Controls.Add(this.discordUrlLabel);
@@ -116,6 +116,7 @@ namespace MusicBeePlugin
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
             this.Text = "Settings";
+            this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
