@@ -35,8 +35,8 @@ namespace MusicBeePlugin
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("status")]
-        public string Status { get; set; }
+        [JsonProperty("state")]
+        public string State { get; set; }
     }
 
     public class TrackPayload

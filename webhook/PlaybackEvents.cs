@@ -6,6 +6,7 @@ namespace MusicBeePlugin
     public partial class Plugin
     {
         public static string firstMessageId;
+        public static PlayState state;
 
         public async Task ReceiveNotification(string sourceFileUrl, NotificationType type)
         {
@@ -15,6 +16,7 @@ namespace MusicBeePlugin
                     switch (mbApiInterface.Player_GetPlayState())
                     {
                         case PlayState.Playing:
+                            // PlayState state = mbApiInterface.Player_GetPlayState();
 
                             break;
 
