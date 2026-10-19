@@ -30,11 +30,12 @@ namespace MusicBeePlugin
             this.discordUrlLabel = new System.Windows.Forms.Label();
             this.slackUrlLabel = new System.Windows.Forms.Label();
             this.genericUrlLabel = new System.Windows.Forms.Label();
+            this.versionLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // discordUrlTextBox
             // 
-            this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.Menu;
+            this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
             this.discordUrlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.discordUrlTextBox.ForeColor = System.Drawing.Color.Black;
             this.discordUrlTextBox.Location = new System.Drawing.Point(100, 36);
@@ -46,7 +47,7 @@ namespace MusicBeePlugin
             // slackUrlTextBox
             // 
             this.slackUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.slackUrlTextBox.Location = new System.Drawing.Point(100, 73);
+            this.slackUrlTextBox.Location = new System.Drawing.Point(100, 80);
             this.slackUrlTextBox.Name = "slackUrlTextBox";
             this.slackUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.slackUrlTextBox.TabIndex = 2;
@@ -83,7 +84,7 @@ namespace MusicBeePlugin
             // slackUrlLabel
             // 
             this.slackUrlLabel.AutoSize = true;
-            this.slackUrlLabel.Location = new System.Drawing.Point(14, 80);
+            this.slackUrlLabel.Location = new System.Drawing.Point(14, 83);
             this.slackUrlLabel.Name = "slackUrlLabel";
             this.slackUrlLabel.Size = new System.Drawing.Size(59, 13);
             this.slackUrlLabel.TabIndex = 8;
@@ -99,10 +100,21 @@ namespace MusicBeePlugin
             this.genericUrlLabel.Text = "Custom URL";
             this.genericUrlLabel.Click += new System.EventHandler(this.genericUrlLabel_Click);
             // 
+            // versionLabel
+            // 
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.versionLabel.Location = new System.Drawing.Point(372, 9);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(40, 13);
+            this.versionLabel.TabIndex = 12;
+            this.versionLabel.Text = "v.2.1.0";
+            // 
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(419, 196);
+            this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.genericUrlLabel);
             this.Controls.Add(this.slackUrlLabel);
             this.Controls.Add(this.discordUrlLabel);
@@ -128,5 +140,6 @@ namespace MusicBeePlugin
         private Label discordUrlLabel;
         private Label slackUrlLabel;
         private Label genericUrlLabel;
+        private Label versionLabel;
     }
 }
