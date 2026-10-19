@@ -66,7 +66,7 @@ namespace MusicBeePlugin
             this.Save.BackColor = System.Drawing.SystemColors.Menu;
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Save.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Save.Location = new System.Drawing.Point(336, 159);
+            this.Save.Location = new System.Drawing.Point(336, 144);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(71, 23);
             this.Save.TabIndex = 5;
@@ -114,7 +114,7 @@ namespace MusicBeePlugin
             // forumLinkLabel
             // 
             this.forumLinkLabel.AutoSize = true;
-            this.forumLinkLabel.Location = new System.Drawing.Point(16, 177);
+            this.forumLinkLabel.Location = new System.Drawing.Point(1, 185);
             this.forumLinkLabel.Name = "forumLinkLabel";
             this.forumLinkLabel.Size = new System.Drawing.Size(42, 13);
             this.forumLinkLabel.TabIndex = 13;
