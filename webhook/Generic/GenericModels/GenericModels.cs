@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace MusicBeePlugin
 {
@@ -72,8 +73,8 @@ namespace MusicBeePlugin
         [JsonProperty("sampleRateHz")]
         public string SampleRateHz { get; set; }
 
-        [JsonProperty("bitdepth")]
-        public int Bitdepth { get; set; }
+        [JsonProperty("bitDepth")]
+        public int BitDepth { get; set; }
 
         [JsonProperty("channels")]
         public int Channels { get; set; }
