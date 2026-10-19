@@ -38,5 +38,10 @@ namespace MusicBeePlugin
         {
 
         }
+
+        private void SettingsForm_Load(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }
