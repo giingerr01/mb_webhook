@@ -28,5 +28,15 @@ namespace MusicBeePlugin
         {
 
         }
+
+        private void label1_Click_1(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void genericUrlLabel_Click(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }
