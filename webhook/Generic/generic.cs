@@ -32,6 +32,7 @@ namespace MusicBeePlugin
             string format,
             string sampleRateHz,
             int bitDepth,
+            string channels,
             string album,
             string art
         )
@@ -66,7 +67,7 @@ namespace MusicBeePlugin
                         BitrateKbps = bitrate,
                         SampleRateHz = sampleRateHz,
                         BitDepth = bitDepth,
-                        // channels = null 
+                        Channels = channels,
                         Codec = format
 
                     },
