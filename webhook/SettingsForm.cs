@@ -18,5 +18,15 @@ namespace MusicBeePlugin
         public TextBox urlBox => discordUrlTextBox;
         public TextBox slackUrlBox => slackUrlTextBox;
         public TextBox genericUrlBox => genericUrlTextBox;
+
+        private void discordUrlTextBox_TextChanged(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }
