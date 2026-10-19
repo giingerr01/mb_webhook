@@ -114,7 +114,7 @@ namespace MusicBeePlugin
             // forumLinkLabel
             // 
             this.forumLinkLabel.AutoSize = true;
-            this.forumLinkLabel.Location = new System.Drawing.Point(1, 185);
+            this.forumLinkLabel.Location = new System.Drawing.Point(324, 9);
             this.forumLinkLabel.Name = "forumLinkLabel";
             this.forumLinkLabel.Size = new System.Drawing.Size(42, 13);
             this.forumLinkLabel.TabIndex = 13;
