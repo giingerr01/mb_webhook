@@ -52,6 +52,16 @@ namespace MusicBeePlugin
                         FilePropertyType.SampleRate
                         );
 
+                    string channels = mbApiInterface.NowPlaying_GetFileProperty(
+                        FilePropertyType.Channels
+                        );
+
+                    // int channels = 0;
+                    // if (int.TryParse(channel, out var parsedChannels))
+                    // {
+                    //     channels = parsedChannels;
+                    // }
+
                     string bitdepth = mbApiInterface.NowPlaying_GetFileProperty(
                         FilePropertyType.Bitdepth
                     );
@@ -98,6 +108,7 @@ namespace MusicBeePlugin
                             format,
                             sampleRateHz,
                             bitDepth,
+                            channels,
                             album,
                             art));
 
