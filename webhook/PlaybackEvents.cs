@@ -52,6 +52,16 @@ namespace MusicBeePlugin
                         FilePropertyType.SampleRate
                         );
 
+                    string bitdepth = mbApiInterface.NowPlaying_GetFileProperty(
+                        FilePropertyType.Bitdepth
+                    );
+
+                    int bitDepth = 0;
+                    if (int.TryParse(bitdepth, out var parsedDepth))
+                    {
+                        bitDepth = parsedDepth;
+                    }
+
                     // fetching raw date first 
                     string rawYear = mbApiInterface.NowPlaying_GetFileTag(MetaDataType.Year);
 
@@ -87,6 +97,7 @@ namespace MusicBeePlugin
                             bitrate,
                             format,
                             sampleRateHz,
+                            bitDepth,
                             album,
                             art));
 
