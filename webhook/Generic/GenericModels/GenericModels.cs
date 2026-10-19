@@ -77,7 +77,7 @@ namespace MusicBeePlugin
         public int BitDepth { get; set; }
 
         [JsonProperty("channels")]
-        public int Channels { get; set; }
+        public string Channels { get; set; }
 
         [JsonProperty("codec")]
         public string Codec { get; set; }
