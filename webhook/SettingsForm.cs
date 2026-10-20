@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Forms;
 
 namespace MusicBeePlugin
@@ -18,6 +19,19 @@ namespace MusicBeePlugin
         public TextBox urlBox => discordUrlTextBox;
         public TextBox slackUrlBox => slackUrlTextBox;
         public TextBox genericUrlBox => genericUrlTextBox;
+
+        private bool IsValidUrl(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return true; // Allow empty URL
+            }
+
+            return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp 
+                || 
+                uriResult.Scheme == Uri.UriSchemeHttps);
+        }
 
         private void discordUrlTextBox_TextChanged(object sender, System.EventArgs e)
         {
@@ -53,6 +67,41 @@ namespace MusicBeePlugin
 
         private void Save_Click(object sender, System.EventArgs e)
         {
+            if (!IsValidUrl(discordUrlTextBox.Text))
+            {
+                MessageBox.Show(
+                    "Enter a valid Discord webhook URL.",
+                    "Invalid URL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                discordUrlTextBox.Focus();
+                return;
+            }
+
+            if (!IsValidUrl(slackUrlTextBox.Text))
+            {
+                MessageBox.Show(
+                    "Enter a valid Slack webhook URL.",
+                    "Invalid URL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                slackUrlTextBox.Focus();
+                return;
+            }
+            if (!IsValidUrl(genericUrlTextBox.Text))
+            {
+                MessageBox.Show(
+                    "Enter a valid URL.",
+                    "Invalid URL",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                genericUrlTextBox.Focus();
+                return;
+            }
+
+            DialogResult = DialogResult.OK;
+            Close();
+
 
         }
     }
