@@ -32,6 +32,9 @@ namespace MusicBeePlugin
             this.genericUrlLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
             this.forumLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.discordCheckBox = new System.Windows.Forms.CheckBox();
+            this.slackCheckBox = new System.Windows.Forms.CheckBox();
+            this.genericCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // discordUrlTextBox
@@ -39,7 +42,7 @@ namespace MusicBeePlugin
             this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.Info;
             this.discordUrlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.discordUrlTextBox.ForeColor = System.Drawing.Color.Black;
-            this.discordUrlTextBox.Location = new System.Drawing.Point(100, 36);
+            this.discordUrlTextBox.Location = new System.Drawing.Point(99, 38);
             this.discordUrlTextBox.Name = "discordUrlTextBox";
             this.discordUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.discordUrlTextBox.TabIndex = 0;
@@ -56,7 +59,7 @@ namespace MusicBeePlugin
             // genericUrlTextBox
             // 
             this.genericUrlTextBox.BackColor = System.Drawing.SystemColors.Info;
-            this.genericUrlTextBox.Location = new System.Drawing.Point(100, 118);
+            this.genericUrlTextBox.Location = new System.Drawing.Point(99, 122);
             this.genericUrlTextBox.Name = "genericUrlTextBox";
             this.genericUrlTextBox.Size = new System.Drawing.Size(307, 20);
             this.genericUrlTextBox.TabIndex = 3;
@@ -94,7 +97,7 @@ namespace MusicBeePlugin
             // genericUrlLabel
             // 
             this.genericUrlLabel.AutoSize = true;
-            this.genericUrlLabel.Location = new System.Drawing.Point(14, 121);
+            this.genericUrlLabel.Location = new System.Drawing.Point(14, 125);
             this.genericUrlLabel.Name = "genericUrlLabel";
             this.genericUrlLabel.Size = new System.Drawing.Size(67, 13);
             this.genericUrlLabel.TabIndex = 11;
@@ -122,10 +125,43 @@ namespace MusicBeePlugin
             this.forumLinkLabel.Text = "Forum?";
             this.forumLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.forumLinkLabel_LinkClicked);
             // 
+            // discordCheckBox
+            // 
+            this.discordCheckBox.AutoSize = true;
+            this.discordCheckBox.Location = new System.Drawing.Point(17, 12);
+            this.discordCheckBox.Name = "discordCheckBox";
+            this.discordCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.discordCheckBox.TabIndex = 14;
+            this.discordCheckBox.Text = "Enabled";
+            this.discordCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // slackCheckBox
+            // 
+            this.slackCheckBox.AutoSize = true;
+            this.slackCheckBox.Location = new System.Drawing.Point(16, 63);
+            this.slackCheckBox.Name = "slackCheckBox";
+            this.slackCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.slackCheckBox.TabIndex = 15;
+            this.slackCheckBox.Text = "Enabled";
+            this.slackCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // genericCheckBox
+            // 
+            this.genericCheckBox.AutoSize = true;
+            this.genericCheckBox.Location = new System.Drawing.Point(16, 105);
+            this.genericCheckBox.Name = "genericCheckBox";
+            this.genericCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.genericCheckBox.TabIndex = 16;
+            this.genericCheckBox.Text = "Enabled";
+            this.genericCheckBox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(418, 187);
+            this.Controls.Add(this.genericCheckBox);
+            this.Controls.Add(this.slackCheckBox);
+            this.Controls.Add(this.discordCheckBox);
             this.Controls.Add(this.forumLinkLabel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.genericUrlLabel);
@@ -156,5 +192,8 @@ namespace MusicBeePlugin
         private Label genericUrlLabel;
         private Label versionLabel;
         private LinkLabel forumLinkLabel;
+        private CheckBox discordCheckBox;
+        private CheckBox slackCheckBox;
+        private CheckBox genericCheckBox;
     }
 }
