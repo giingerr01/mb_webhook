@@ -66,9 +66,9 @@ namespace MusicBeePlugin
             // 
             // Save
             // 
-            this.Save.BackColor = System.Drawing.SystemColors.Menu;
+            this.Save.BackColor = System.Drawing.SystemColors.Info;
             this.Save.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.Save.Location = new System.Drawing.Point(336, 144);
+            this.Save.Location = new System.Drawing.Point(335, 152);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(71, 23);
             this.Save.TabIndex = 5;
@@ -117,7 +117,7 @@ namespace MusicBeePlugin
             // forumLinkLabel
             // 
             this.forumLinkLabel.AutoSize = true;
-            this.forumLinkLabel.Location = new System.Drawing.Point(324, 9);
+            this.forumLinkLabel.Location = new System.Drawing.Point(12, 162);
             this.forumLinkLabel.Name = "forumLinkLabel";
             this.forumLinkLabel.Size = new System.Drawing.Size(42, 13);
             this.forumLinkLabel.TabIndex = 13;
@@ -148,12 +148,13 @@ namespace MusicBeePlugin
             // genericEnabledCheckBox
             // 
             this.genericEnabledCheckBox.AutoSize = true;
+            this.genericEnabledCheckBox.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.genericEnabledCheckBox.Location = new System.Drawing.Point(16, 105);
             this.genericEnabledCheckBox.Name = "genericEnabledCheckBox";
             this.genericEnabledCheckBox.Size = new System.Drawing.Size(65, 17);
             this.genericEnabledCheckBox.TabIndex = 16;
             this.genericEnabledCheckBox.Text = "Enabled";
-            this.genericEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.genericEnabledCheckBox.UseVisualStyleBackColor = false;
             // 
             // SettingsForm
             // 
