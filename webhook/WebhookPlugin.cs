@@ -16,6 +16,9 @@ namespace MusicBeePlugin
         private string GenericWebhookUrl = "http://localhost:3000/webhook";
         private string DiscordWebhookUrl = "http://localhost:3000/webhook";
         private string SlackWebhookUrl = "http://localhost:4000/webhook";
+        private bool DiscordEnabled;
+        private bool SlackEnabled;
+        private bool GenericEnabled;
         private WebhookClient webhookClient;
 
 

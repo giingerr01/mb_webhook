@@ -1,16 +1,17 @@
 using System;
 using System.IO;
-using System.Drawing;
-using System.Windows.Forms;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MusicBeePlugin
 {
     public partial class Plugin
     {
-        // Dictionary to store service names and their corresponding URLs
-        public Dictionary<string, string> WebhookUrls { get; set; } = new Dictionary<string, string>();
+        // Dictionary to store service names and their given  Urls
+
+        public WebhookSettings Settings { get; set; }
+        = new WebhookSettings();
 
         public PluginInfo Initialise(IntPtr apiInterfacePtr)
         {
@@ -29,13 +30,31 @@ namespace MusicBeePlugin
                 try
                 {
                     string jsonContent = File.ReadAllText(jsonFilePath);
-                    WebhookUrls = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonContent) ?? new Dictionary<string, string>();
+                    JObject settingsJson = JObject.Parse(jsonContent);
+                    if (settingsJson.Property("DiscordUrl") != null
+                        || settingsJson.Property("SlackUrl") != null
+                        || settingsJson.Property("GenericUrl") != null)
+                    {
+                        Settings = settingsJson.ToObject<WebhookSettings>()
+                            ?? new WebhookSettings();
+                    }
+                    else
+                    {
+                        Dictionary<string, string> legacyUrls =
+                            settingsJson.ToObject<Dictionary<string, string>>();
+                        Settings = new WebhookSettings
+                        {
+                            DiscordUrl = GetLegacyUrl(legacyUrls, "discord"),
+                            SlackUrl = GetLegacyUrl(legacyUrls, "slack"),
+                            GenericUrl = GetLegacyUrl(legacyUrls, "Generic")
+                        };
+                    }
                     Logger.Log("Webhook settings loaded successfully from JSON.");
                 }
                 catch (Exception ex)
                 {
                     Logger.Log("Failed to parse webhooks.json: " + ex.Message);
-                    WebhookUrls = new Dictionary<string, string>();
+                    Settings = new WebhookSettings();
                 }
             }
             else
@@ -45,9 +64,14 @@ namespace MusicBeePlugin
             }
 
             // Assign individual variables or access directly from the dictionary as needed
-            DiscordWebhookUrl = WebhookUrls.ContainsKey("discord") ? WebhookUrls["discord"] : string.Empty;
-            SlackWebhookUrl = WebhookUrls.ContainsKey("slack") ? WebhookUrls["slack"] : string.Empty;
-            GenericWebhookUrl = WebhookUrls.ContainsKey("Generic") ? WebhookUrls["Generic"] : string.Empty;
+            DiscordWebhookUrl = Settings.DiscordUrl;
+            SlackWebhookUrl = Settings.SlackUrl;
+            GenericWebhookUrl = Settings.GenericUrl;
+
+            DiscordEnabled = Settings.DiscordEnabled;
+            SlackEnabled = Settings.SlackEnabled;
+            GenericEnabled = Settings.GenericEnabled;
+
 
             // Logger for musicbee logtrace
             Logger.FilePath = Path.Combine(webhookFolder, "webhook_plugin_log.log");
@@ -76,19 +100,32 @@ namespace MusicBeePlugin
         // Called by MusicBee when the user clicks Apply or Save.
         public void SaveSettings()
         {
-            WebhookUrls["discord"] = DiscordWebhookUrl;
-            WebhookUrls["slack"] = SlackWebhookUrl;
-            WebhookUrls["Generic"] = GenericWebhookUrl;
+            Settings.DiscordUrl = DiscordWebhookUrl;
+            Settings.SlackUrl = SlackWebhookUrl;
+            Settings.GenericUrl = GenericWebhookUrl;
+            Settings.DiscordEnabled = DiscordEnabled;
+            Settings.SlackEnabled = SlackEnabled;
+            Settings.GenericEnabled = GenericEnabled;
 
             string dataPath = mbApiInterface.Setting_GetPersistentStoragePath();
             string webhookFolder = Path.Combine(dataPath, "webhook");
             Directory.CreateDirectory(webhookFolder);
 
             string jsonFilePath = Path.Combine(webhookFolder, "webhooks.json");
-            string jsonContent = JsonConvert.SerializeObject(WebhookUrls, Formatting.Indented);
+            string jsonContent = JsonConvert.SerializeObject(Settings, Formatting.Indented);
 
             File.WriteAllText(jsonFilePath, jsonContent);
             Logger.Log("Webhook settings saved to webhooks.json.");
+        }
+
+        private static string GetLegacyUrl(
+            Dictionary<string, string> legacyUrls,
+            string key)
+        {
+            return legacyUrls != null
+                && legacyUrls.TryGetValue(key, out string url)
+                ? url
+                : string.Empty;
         }
     }
 }

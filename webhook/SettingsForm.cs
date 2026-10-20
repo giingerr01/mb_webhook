@@ -21,24 +21,23 @@ namespace MusicBeePlugin
             slackEnabledCheckBox.Checked = slackEnabled;
             genericEnabledCheckBox.Checked = genericEnabled;
         }
-
-        public TextBox urlBox => discordUrlTextBox;
-        public TextBox slackUrlBox => slackUrlTextBox;
-        public TextBox genericUrlBox => genericUrlTextBox;
+        public string DiscordWebhookUrl => discordUrlTextBox.Text;
+        public string SlackWebhookUrl => slackUrlTextBox.Text;
+        public string GenericWebhookUrl => genericUrlTextBox.Text;
         public bool DiscordEnabled => discordEnabledCheckBox.Checked;
-        public bool SlackEnabled => slackEnabledCheckBox.Checked;   
+        public bool SlackEnabled => slackEnabledCheckBox.Checked;
         public bool GenericEnabled => genericEnabledCheckBox.Checked;
 
         private bool IsValidUrl(string url)
         {
             if (string.IsNullOrEmpty(url))
             {
-                return true; // Allow empty URL
+                return false; // Allow empty URL
             }
 
             return Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttp 
-                || 
+                && (uriResult.Scheme == Uri.UriSchemeHttp
+                ||
                 uriResult.Scheme == Uri.UriSchemeHttps);
         }
 
@@ -76,8 +75,8 @@ namespace MusicBeePlugin
 
         private void Save_Click(object sender, System.EventArgs e)
         {
-            if (discordEnabledCheckBox.Checked 
-                && 
+            if (discordEnabledCheckBox.Checked
+                &&
                 !IsValidUrl(discordUrlTextBox.Text))
             {
                 MessageBox.Show(
@@ -89,8 +88,8 @@ namespace MusicBeePlugin
                 return;
             }
 
-            if (slackEnabledCheckBox.Checked 
-                && 
+            if (slackEnabledCheckBox.Checked
+                &&
                 !IsValidUrl(slackUrlTextBox.Text))
             {
                 MessageBox.Show(
@@ -101,8 +100,8 @@ namespace MusicBeePlugin
                 slackUrlTextBox.Focus();
                 return;
             }
-            if (genericEnabledCheckBox.Checked 
-                && 
+            if (genericEnabledCheckBox.Checked
+                &&
                 !IsValidUrl(genericUrlTextBox.Text))
             {
                 MessageBox.Show(

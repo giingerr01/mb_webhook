@@ -94,9 +94,13 @@ namespace MusicBeePlugin
                     {
                         Logger.Log("Artwork Lookup failed: " + ex);
                     }
+                    Task genericTask = Task.CompletedTask;
+                    Task<string> discordTask = Task.FromResult<string>(null);
+                    Task slackTask = Task.CompletedTask;
+
                     if (GenericEnabled)
                     {
-                        Task GenericTask = SafeSendAsync(
+                        genericTask = SafeSendAsync(
                             "Local",
                             () => GenericWebhook.SendAsync(
                                 GenericWebhookUrl,
@@ -118,17 +122,16 @@ namespace MusicBeePlugin
 
                     if (DiscordEnabled)
                     {
-
-                        Task<string> discordTask = SafeSendDiscordAsync(
+                        discordTask = SafeSendDiscordAsync(
                             artist,
                             title,
                             album,
                             bitrate,
                             art);
                     }
-                    if (slackEnabled)
+                    if (SlackEnabled)
                     {
-                        Task slackTask = SafeSendAsync(
+                        slackTask = SafeSendAsync(
                             "Slack",
                             () => SlackNotifier.SendAsync(
                                 SlackWebhookUrl,
@@ -137,9 +140,9 @@ namespace MusicBeePlugin
                                 album,
                                 bitrate,
                                 art));
-                        await Task.WhenAll(GenericTask, discordTask, slackTask);
                     }
 
+                    await Task.WhenAll(genericTask, discordTask, slackTask);
                     string id = await discordTask;
                     if (id != null)
                     {
