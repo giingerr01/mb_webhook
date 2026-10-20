@@ -8,17 +8,26 @@ namespace MusicBeePlugin
         public SettingsForm(
             string discordWebhookUrl,
             string slackWebhookUrl,
-            string genericWebhookUrl)
+            string genericWebhookUrl,
+            bool discordEnabled,
+            bool slackEnabled,
+            bool genericEnabled)
         {
             InitializeComponent();
             discordUrlTextBox.Text = discordWebhookUrl;
             slackUrlTextBox.Text = slackWebhookUrl;
             genericUrlTextBox.Text = genericWebhookUrl;
+            discordEnabledCheckBox.Checked = discordEnabled;
+            slackEnabledCheckBox.Checked = slackEnabled;
+            genericEnabledCheckBox.Checked = genericEnabled;
         }
 
         public TextBox urlBox => discordUrlTextBox;
         public TextBox slackUrlBox => slackUrlTextBox;
         public TextBox genericUrlBox => genericUrlTextBox;
+        public bool DiscordEnabled => discordEnabledCheckBox.Checked;
+        public bool SlackEnabled => slackEnabledCheckBox.Checked;   
+        public bool GenericEnabled => genericEnabledCheckBox.Checked;
 
         private bool IsValidUrl(string url)
         {
