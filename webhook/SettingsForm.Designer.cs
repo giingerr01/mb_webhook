@@ -36,7 +36,7 @@ namespace MusicBeePlugin
             // 
             // discordUrlTextBox
             // 
-            this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.discordUrlTextBox.BackColor = System.Drawing.SystemColors.Info;
             this.discordUrlTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.discordUrlTextBox.ForeColor = System.Drawing.Color.Black;
             this.discordUrlTextBox.Location = new System.Drawing.Point(100, 36);
@@ -47,7 +47,7 @@ namespace MusicBeePlugin
             // 
             // slackUrlTextBox
             // 
-            this.slackUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.slackUrlTextBox.BackColor = System.Drawing.SystemColors.Info;
             this.slackUrlTextBox.Location = new System.Drawing.Point(100, 80);
             this.slackUrlTextBox.Name = "slackUrlTextBox";
             this.slackUrlTextBox.Size = new System.Drawing.Size(307, 20);
@@ -55,7 +55,7 @@ namespace MusicBeePlugin
             // 
             // genericUrlTextBox
             // 
-            this.genericUrlTextBox.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.genericUrlTextBox.BackColor = System.Drawing.SystemColors.Info;
             this.genericUrlTextBox.Location = new System.Drawing.Point(100, 118);
             this.genericUrlTextBox.Name = "genericUrlTextBox";
             this.genericUrlTextBox.Size = new System.Drawing.Size(307, 20);
@@ -64,7 +64,6 @@ namespace MusicBeePlugin
             // Save
             // 
             this.Save.BackColor = System.Drawing.SystemColors.Menu;
-            this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Save.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Save.Location = new System.Drawing.Point(336, 144);
             this.Save.Name = "Save";
@@ -72,6 +71,7 @@ namespace MusicBeePlugin
             this.Save.TabIndex = 5;
             this.Save.Text = "Save";
             this.Save.UseVisualStyleBackColor = false;
+            this.Save.Click += new System.EventHandler(this.Save_Click);
             // 
             // discordUrlLabel
             // 
@@ -125,7 +125,7 @@ namespace MusicBeePlugin
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.ClientSize = new System.Drawing.Size(419, 196);
+            this.ClientSize = new System.Drawing.Size(418, 187);
             this.Controls.Add(this.forumLinkLabel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.genericUrlLabel);
