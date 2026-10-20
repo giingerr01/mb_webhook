@@ -23,6 +23,7 @@ namespace MusicBeePlugin
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.discordUrlTextBox = new System.Windows.Forms.TextBox();
             this.slackUrlTextBox = new System.Windows.Forms.TextBox();
             this.genericUrlTextBox = new System.Windows.Forms.TextBox();
@@ -174,6 +175,7 @@ namespace MusicBeePlugin
             this.Controls.Add(this.discordUrlTextBox);
             this.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
