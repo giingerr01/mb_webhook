@@ -16,14 +16,14 @@ namespace MusicBeePlugin
                 GenericWebhookUrl,
                 DiscordEnabled,
                 SlackEnabled,
-                genericEnabled
+                GenericEnabled
                 ))
             {
                 if (configForm.ShowDialog() == DialogResult.OK)
                 {
-                    DiscordWebhookUrl = configForm.urlBox?.Text?.Trim() ?? string.Empty;
-                    SlackWebhookUrl = configForm.slackUrlBox?.Text?.Trim() ?? string.Empty;
-                    GenericWebhookUrl = configForm.genericUrlBox?.Text?.Trim() ?? string.Empty;
+                    DiscordWebhookUrl = configForm.DiscordWebhookUrl.Trim();
+                    SlackWebhookUrl = configForm.SlackWebhookUrl.Trim();
+                    GenericWebhookUrl = configForm.GenericWebhookUrl.Trim();
 
                     DiscordEnabled = configForm.DiscordEnabled;
                     SlackEnabled = configForm.SlackEnabled;
