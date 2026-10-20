@@ -76,7 +76,9 @@ namespace MusicBeePlugin
 
         private void Save_Click(object sender, System.EventArgs e)
         {
-            if (!IsValidUrl(discordUrlTextBox.Text))
+            if (discordEnabledCheckBox.Checked 
+                && 
+                !IsValidUrl(discordUrlTextBox.Text))
             {
                 MessageBox.Show(
                     "Enter a valid Discord webhook URL.",
@@ -87,7 +89,9 @@ namespace MusicBeePlugin
                 return;
             }
 
-            if (!IsValidUrl(slackUrlTextBox.Text))
+            if (slackEnabledCheckBox.Checked 
+                && 
+                !IsValidUrl(slackUrlTextBox.Text))
             {
                 MessageBox.Show(
                     "Enter a valid Slack webhook URL.",
@@ -97,7 +101,9 @@ namespace MusicBeePlugin
                 slackUrlTextBox.Focus();
                 return;
             }
-            if (!IsValidUrl(genericUrlTextBox.Text))
+            if (genericEnabledCheckBox.Checked 
+                && 
+                !IsValidUrl(genericUrlTextBox.Text))
             {
                 MessageBox.Show(
                     "Enter a valid URL.",

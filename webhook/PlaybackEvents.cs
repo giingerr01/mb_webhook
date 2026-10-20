@@ -94,44 +94,51 @@ namespace MusicBeePlugin
                     {
                         Logger.Log("Artwork Lookup failed: " + ex);
                     }
+                    if (GenericEnabled)
+                    {
+                        Task GenericTask = SafeSendAsync(
+                            "Local",
+                            () => GenericWebhook.SendAsync(
+                                GenericWebhookUrl,
+                                positionMs,
+                                durationMs,
+                                artist,
+                                title,
+                                albumArtist,
+                                year,
+                                genre,
+                                bitrate,
+                                format,
+                                sampleRateHz,
+                                bitDepth,
+                                channels,
+                                album,
+                                art));
+                    }
 
-                    Task GenericTask = SafeSendAsync(
-                        "Local",
-                        () => GenericWebhook.SendAsync(
-                            GenericWebhookUrl,
-                            positionMs,
-                            durationMs,
-                            artist,
-                            title,
-                            albumArtist,
-                            year,
-                            genre,
-                            bitrate,
-                            format,
-                            sampleRateHz,
-                            bitDepth,
-                            channels,
-                            album,
-                            art));
+                    if (DiscordEnabled)
+                    {
 
-                    Task<string> discordTask = SafeSendDiscordAsync(
-                        artist,
-                        title,
-                        album,
-                        bitrate,
-                        art);
-
-                    Task slackTask = SafeSendAsync(
-                        "Slack",
-                        () => SlackNotifier.SendAsync(
-                            SlackWebhookUrl,
+                        Task<string> discordTask = SafeSendDiscordAsync(
                             artist,
                             title,
                             album,
                             bitrate,
-                            art));
-
-                    await Task.WhenAll(GenericTask, discordTask, slackTask);
+                            art);
+                    }
+                    if (slackEnabled)
+                    {
+                        Task slackTask = SafeSendAsync(
+                            "Slack",
+                            () => SlackNotifier.SendAsync(
+                                SlackWebhookUrl,
+                                artist,
+                                title,
+                                album,
+                                bitrate,
+                                art));
+                        await Task.WhenAll(GenericTask, discordTask, slackTask);
+                    }
 
                     string id = await discordTask;
                     if (id != null)
