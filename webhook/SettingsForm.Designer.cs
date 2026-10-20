@@ -32,9 +32,9 @@ namespace MusicBeePlugin
             this.genericUrlLabel = new System.Windows.Forms.Label();
             this.versionLabel = new System.Windows.Forms.Label();
             this.forumLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.discordCheckBox = new System.Windows.Forms.CheckBox();
-            this.slackCheckBox = new System.Windows.Forms.CheckBox();
-            this.genericCheckBox = new System.Windows.Forms.CheckBox();
+            this.discordEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.slackEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.genericEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // discordUrlTextBox
@@ -125,43 +125,43 @@ namespace MusicBeePlugin
             this.forumLinkLabel.Text = "Forum?";
             this.forumLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.forumLinkLabel_LinkClicked);
             // 
-            // discordCheckBox
+            // discordEnabledCheckBox
             // 
-            this.discordCheckBox.AutoSize = true;
-            this.discordCheckBox.Location = new System.Drawing.Point(17, 12);
-            this.discordCheckBox.Name = "discordCheckBox";
-            this.discordCheckBox.Size = new System.Drawing.Size(65, 17);
-            this.discordCheckBox.TabIndex = 14;
-            this.discordCheckBox.Text = "Enabled";
-            this.discordCheckBox.UseVisualStyleBackColor = true;
+            this.discordEnabledCheckBox.AutoSize = true;
+            this.discordEnabledCheckBox.Location = new System.Drawing.Point(17, 12);
+            this.discordEnabledCheckBox.Name = "discordEnabledCheckBox";
+            this.discordEnabledCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.discordEnabledCheckBox.TabIndex = 14;
+            this.discordEnabledCheckBox.Text = "Enabled";
+            this.discordEnabledCheckBox.UseVisualStyleBackColor = true;
             // 
-            // slackCheckBox
+            // slackEnabledCheckBox
             // 
-            this.slackCheckBox.AutoSize = true;
-            this.slackCheckBox.Location = new System.Drawing.Point(16, 63);
-            this.slackCheckBox.Name = "slackCheckBox";
-            this.slackCheckBox.Size = new System.Drawing.Size(65, 17);
-            this.slackCheckBox.TabIndex = 15;
-            this.slackCheckBox.Text = "Enabled";
-            this.slackCheckBox.UseVisualStyleBackColor = true;
+            this.slackEnabledCheckBox.AutoSize = true;
+            this.slackEnabledCheckBox.Location = new System.Drawing.Point(16, 63);
+            this.slackEnabledCheckBox.Name = "slackEnabledCheckBox";
+            this.slackEnabledCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.slackEnabledCheckBox.TabIndex = 15;
+            this.slackEnabledCheckBox.Text = "Enabled";
+            this.slackEnabledCheckBox.UseVisualStyleBackColor = true;
             // 
-            // genericCheckBox
+            // genericEnabledCheckBox
             // 
-            this.genericCheckBox.AutoSize = true;
-            this.genericCheckBox.Location = new System.Drawing.Point(16, 105);
-            this.genericCheckBox.Name = "genericCheckBox";
-            this.genericCheckBox.Size = new System.Drawing.Size(65, 17);
-            this.genericCheckBox.TabIndex = 16;
-            this.genericCheckBox.Text = "Enabled";
-            this.genericCheckBox.UseVisualStyleBackColor = true;
+            this.genericEnabledCheckBox.AutoSize = true;
+            this.genericEnabledCheckBox.Location = new System.Drawing.Point(16, 105);
+            this.genericEnabledCheckBox.Name = "genericEnabledCheckBox";
+            this.genericEnabledCheckBox.Size = new System.Drawing.Size(65, 17);
+            this.genericEnabledCheckBox.TabIndex = 16;
+            this.genericEnabledCheckBox.Text = "Enabled";
+            this.genericEnabledCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(418, 187);
-            this.Controls.Add(this.genericCheckBox);
-            this.Controls.Add(this.slackCheckBox);
-            this.Controls.Add(this.discordCheckBox);
+            this.Controls.Add(this.genericEnabledCheckBox);
+            this.Controls.Add(this.slackEnabledCheckBox);
+            this.Controls.Add(this.discordEnabledCheckBox);
             this.Controls.Add(this.forumLinkLabel);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.genericUrlLabel);
@@ -192,8 +192,8 @@ namespace MusicBeePlugin
         private Label genericUrlLabel;
         private Label versionLabel;
         private LinkLabel forumLinkLabel;
-        private CheckBox discordCheckBox;
-        private CheckBox slackCheckBox;
-        private CheckBox genericCheckBox;
+        private CheckBox discordEnabledCheckBox;
+        private CheckBox slackEnabledCheckBox;
+        private CheckBox genericEnabledCheckBox;
     }
 }
