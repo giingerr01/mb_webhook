@@ -88,7 +88,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Newtonsoft.Json" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -110,6 +109,7 @@
     </Compile>
     <Compile Include="webhook\WebhookPlugin.cs" />
     <Compile Include="webhook\WebhookClient.cs" />
+    <Compile Include="webhook\WebhookSettings.cs" />
     <Compile Include="webhook\PlaybackEvents.cs" />
     <Compile Include="webhook\PluginIntialize.cs" />
     <Compile Include="webhook\Apps\slack\slack.cs" />
