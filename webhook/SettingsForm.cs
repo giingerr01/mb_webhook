@@ -50,5 +50,10 @@ namespace MusicBeePlugin
                 "https://getmusicbee.com/forum/index.php?topic=44914.0"
                 );
         }
+
+        private void Save_Click(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }
