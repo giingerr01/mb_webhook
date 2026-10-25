@@ -83,7 +83,7 @@ namespace MusicBeePlugin
             // Webhook plugin metadata
             about.PluginInfoVersion = PluginInfoVersion;
             about.Name = "Webhook Plugin";
-            about.Description = "A plugin that posts track now playing status";
+            about.Description = "A Plugin for MusicBee, Sends now playing status in as json Payload";
             about.Author = "giingerr01";
             about.TargetApplication = "MusicBee";
             about.Type = PluginType.General;
